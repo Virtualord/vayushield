@@ -14,6 +14,7 @@ import ActionPlan from './components/ActionPlan.jsx';
 import PersonalPlanner from './components/PersonalPlanner.jsx';
 import DemoModeBanner from './components/DemoModeBanner.jsx';
 import { announceDemoMode, demoModeEventName } from './utils/demoMode.js';
+import { checkApiHealth } from './services/healthCheck.js';
 import { activeZones as zones } from './data/zones.js';
 import { compareScenarios, groupImpact, rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
@@ -45,11 +46,9 @@ function App() {
   useEffect(() => {
     const onDemoMode = () => setDemoMode(true);
     window.addEventListener(demoModeEventName, onDemoMode);
-    fetch('/api/health')
-      .then((response) => {
-        if (!response.ok) throw new Error('Health check failed');
-      })
-      .catch(() => announceDemoMode('health-check'));
+    checkApiHealth().then((healthy) => {
+      if (!healthy) announceDemoMode('health-check');
+    });
     return () => window.removeEventListener(demoModeEventName, onDemoMode);
   }, []);
 

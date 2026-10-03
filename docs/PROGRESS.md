@@ -59,3 +59,13 @@
 - Baseline is zone-specific wind with normal traffic and industry; scenario inputs remain illustrative and are not forecasts.
 - Community sensitivity multipliers are documented heuristics, not health impact estimates. Action plans consume only the three current ranked engine assessments and the active scenario; offline mode includes scenario context deterministically.
 - Planner activity factors and keyword classification are heuristics, not forecasts or measured exposure. `.ics` recurrence rules are not expanded; event titles remain local and are excluded from plan-day requests. Habit library entries remain unreviewed pending owner verification.
+
+## M8: Demo Mode
+
+- Added a visible Demo Mode banner on failed health checks and when AI features use cached or offline guidance; dashboard controls remain available.
+- Added a manually invoked cache generator for the three scenario presets, both languages, both audiences, and both explanation/plan modes. It writes `server/data/demoCache.json` and never logs credentials. It was not run because no `.env` key is available.
+- Endpoints check validated preset-keyed demo cache entries before their deterministic offline templates when live Gemini is unavailable.
+- Added a no-key/no-network server-flow test covering all 12 preset/language/audience combinations.
+- Checks: `npm run lint`, `npm test` (88 tests), and `npm run build` pass. Firefox headless crashed during the visual readiness check, so browser console and 390px layout checks remain unverified.
+- Commits: `7ad0d45` demo banner; `a7e11ea` cache generator; `3057ba5` cached response fallback; final no-network test commit (see `git log`).
+- Next milestone: await the next approved product milestone.
