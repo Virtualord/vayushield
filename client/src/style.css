@@ -1,14 +1,95 @@
 @import 'tailwindcss';
 
+:root {
+  color-scheme: dark;
+  --label: rgba(255, 255, 255, .92);
+  --secondary-label: rgba(235, 235, 245, .76);
+  --tertiary-label: rgba(235, 235, 245, .62);
+  --accent: #0a84ff;
+  --risk-low: #30d158;
+  --risk-moderate: #ffd60a;
+  --risk-high: #ff9f0a;
+  --risk-critical: #ff453a;
+  --page: #0b101b;
+  --glass: rgba(255, 255, 255, .08);
+  --glass-strong: rgba(18, 24, 36, .94);
+  --glass-child: rgba(255, 255, 255, .055);
+  --glass-border: rgba(255, 255, 255, .16);
+  --glass-outline: rgba(0, 0, 0, .16);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, .25);
+  --highlight-glass: inset 0 1px 0 rgba(255, 255, 255, .25);
+  --surface-text: #101521;
+  --ambient-a: rgba(10, 132, 255, .12);
+  --ambient-b: rgba(48, 209, 88, .07);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  background: var(--page);
+  color: var(--label);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --label: #1c1c1e;
+  --secondary-label: rgba(60, 60, 67, .78);
+  --tertiary-label: rgba(60, 60, 67, .68);
+  --accent: #007aff;
+  --risk-low: #34c759;
+  --risk-moderate: #ffcc00;
+  --risk-high: #ff9500;
+  --risk-critical: #ff3b30;
+  --page: #e8edf5;
+  --glass: rgba(255, 255, 255, .78);
+  --glass-strong: rgba(255, 255, 255, .97);
+  --glass-child: rgba(25, 45, 70, .045);
+  --glass-border: rgba(255, 255, 255, .9);
+  --glass-outline: rgba(24, 39, 61, .13);
+  --shadow-glass: 0 8px 32px rgba(30, 48, 75, .16);
+  --highlight-glass: inset 0 1px 0 rgba(255, 255, 255, .9);
+  --surface-text: #101521;
+  --ambient-a: rgba(0, 122, 255, .1);
+  --ambient-b: rgba(52, 199, 89, .08);
+}
+
+:root[data-theme='dark'] { color-scheme: dark; }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']):not([data-theme='light']) {
+    color-scheme: light;
+    --label: #1c1c1e;
+    --secondary-label: rgba(60, 60, 67, .78);
+    --tertiary-label: rgba(60, 60, 67, .68);
+    --accent: #007aff;
+    --risk-low: #34c759;
+    --risk-moderate: #ffcc00;
+    --risk-high: #ff9500;
+    --risk-critical: #ff3b30;
+    --page: #e8edf5;
+    --glass: rgba(255, 255, 255, .78);
+    --glass-strong: rgba(255, 255, 255, .97);
+    --glass-child: rgba(25, 45, 70, .045);
+    --glass-border: rgba(255, 255, 255, .9);
+    --glass-outline: rgba(24, 39, 61, .13);
+    --shadow-glass: 0 8px 32px rgba(30, 48, 75, .16);
+    --highlight-glass: inset 0 1px 0 rgba(255, 255, 255, .9);
+    --ambient-a: rgba(0, 122, 255, .1);
+    --ambient-b: rgba(52, 199, 89, .08);
+  }
+}
+
 @layer base {
   :focus-visible {
-    outline: 2px solid #67e8f9;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 }
 
+html, body, #root { min-height: 100%; }
+body { margin: 0; background: var(--page); color: var(--label); }
+
 .risk-map {
-  background: #0f172a;
+  background: transparent;
 }
 
 .risk-map .leaflet-container {
@@ -25,4 +106,15 @@
   font-weight: 800;
   letter-spacing: 0.02em;
   text-shadow: 0 1px 3px #020617, 1px 0 3px #020617, 0 -1px 3px #020617;
+}
+
+.theme-dark .leaflet-tile-pane { filter: brightness(.72) saturate(.78); }
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  :root {
+    --glass: var(--glass-strong);
+    --glass-border: currentColor;
+    --glass-outline: transparent;
+    --shadow-glass: 0 5px 18px rgba(0, 0, 0, .18);
+  }
 }

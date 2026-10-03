@@ -22,6 +22,14 @@ import './style.css';
 
 function App() {
   const [demoMode, setDemoMode] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    try {
+      const savedTheme = window.localStorage.getItem('vayushield-theme');
+      return savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'system';
+    } catch {
+      return 'system';
+    }
+  });
   const [selectedZoneId, setSelectedZoneId] = useState(zones[0].id);
   const [scenario, setScenario] = useState({
     windSpeed: null,
@@ -52,10 +60,21 @@ function App() {
     return () => window.removeEventListener(demoModeEventName, onDemoMode);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme === 'system' ? '' : theme;
+    document.documentElement.classList.toggle('theme-dark', theme === 'dark');
+    try {
+      if (theme === 'system') window.localStorage.removeItem('vayushield-theme');
+      else window.localStorage.setItem('vayushield-theme', theme);
+    } catch {
+      // Theme remains usable when storage is unavailable.
+    }
+  }, [theme]);
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="app-shell min-h-screen">
       <DemoModeBanner visible={demoMode} />
-      <DashboardHeader />
+      <DashboardHeader theme={theme} onThemeChange={setTheme} />
       <main className="mx-auto max-w-7xl min-w-0 px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
