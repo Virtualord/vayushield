@@ -10,7 +10,7 @@ import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
 import ScenarioSimulator from './components/ScenarioSimulator.jsx';
 import { activeZones as zones } from './data/zones.js';
-import { rankZones } from './utils/riskEngine.js';
+import { compareScenarios, rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
 import './style.css';
 
@@ -22,6 +22,9 @@ function App() {
     industry: 'normal',
   });
   const assessments = useMemo(() => rankZones(zones, scenario), [scenario]);
+  const baselineScenario = { windSpeed: null, traffic: 'normal', industry: 'normal' };
+  const baselineAssessments = useMemo(() => rankZones(zones, baselineScenario), []);
+  const comparisons = useMemo(() => compareScenarios(zones, baselineScenario, scenario), [scenario]);
   const summary = useMemo(() => buildDashboardSummary(assessments), [assessments]);
   const selectedAssessment = useMemo(
     () => assessments.find(({ zone }) => zone.id === selectedZoneId),
@@ -50,11 +53,13 @@ function App() {
           <ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} />
         </div>
         <div className="mt-5">
-          <RiskMap assessments={assessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
+          <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
         </div>
         <div className="mt-5 grid items-start gap-4 lg:grid-cols-[minmax(17rem,0.85fr)_minmax(0,1.4fr)]">
           <RankedZoneList
             assessments={assessments}
+            baselineAssessments={baselineAssessments}
+            comparisons={comparisons}
             selectedZoneId={selectedZoneId}
             onSelect={setSelectedZoneId}
           />
