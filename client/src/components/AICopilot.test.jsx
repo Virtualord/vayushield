@@ -10,6 +10,9 @@ describe('AI copilot panel', () => {
     const markup = renderToStaticMarkup(<AICopilot assessment={assessment} scenario={scenario} />);
     expect(markup).toContain('AI copilot');
     expect(markup).toContain('Explain risk');
+    expect(markup).toContain('Language');
+    expect(markup).toContain('Audience');
+    expect(markup).toContain('Resident');
     expect(markup).not.toContain('Risk factors');
   });
 });

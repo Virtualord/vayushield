@@ -30,6 +30,12 @@ describe('analyzeZone API client', () => {
     expect(fetch.mock.calls[0][1].body).not.toContain('GEMINI_API_KEY');
   });
 
+  it('accepts the Gemini source response', async () => {
+    const geminiPayload = { ...payload, source: 'gemini' };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => geminiPayload }));
+    await expect(analyzeZone(assessment, scenario, 'en', 'authority')).resolves.toEqual(geminiPayload);
+  });
+
   it('returns a safe error for request and server failures', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network details')));
     await expect(analyzeZone(assessment, scenario, 'en', 'authority')).rejects.toThrow(

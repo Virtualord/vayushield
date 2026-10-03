@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { analyzeZone } from '../services/api.js';
 import { copilotLabels } from './copilotLabels.js';
+import SourceBadge from './SourceBadge.jsx';
+import { copyToClipboard } from '../utils/copyToClipboard.js';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
@@ -8,6 +10,8 @@ export default function AICopilot({ assessment, scenario }) {
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState('en');
   const [audience, setAudience] = useState('authority');
+  const [source, setSource] = useState('');
+  const [copyStatus, setCopyStatus] = useState('');
   const labels = copilotLabels[language];
 
   async function explainRisk() {
@@ -16,10 +20,21 @@ export default function AICopilot({ assessment, scenario }) {
     try {
       const response = await analyzeZone(assessment, scenario, language, audience);
       setResult(response.result);
+      setSource(response.source);
+      setCopyStatus('');
     } catch (requestError) {
       setError(requestError.message);
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function copyAdvisory() {
+    try {
+      await copyToClipboard(result.advisoryMessage);
+      setCopyStatus(labels.copied);
+    } catch {
+      setCopyStatus(labels.copyFailed);
     }
   }
 
@@ -39,7 +54,7 @@ export default function AICopilot({ assessment, scenario }) {
           { value: 'hi', label: labels.hindi },
         ]}
         onChange={setLanguage}
-        clearResult={() => { setResult(null); setError(''); }}
+        clearResult={() => { setResult(null); setSource(''); setError(''); setCopyStatus(''); }}
         disabled={isLoading}
       />
       <PreferenceToggle
@@ -50,7 +65,7 @@ export default function AICopilot({ assessment, scenario }) {
           { value: 'resident', label: labels.resident },
         ]}
         onChange={setAudience}
-        clearResult={() => { setResult(null); setError(''); }}
+        clearResult={() => { setResult(null); setSource(''); setError(''); setCopyStatus(''); }}
         disabled={isLoading}
       />
       <button
@@ -64,9 +79,23 @@ export default function AICopilot({ assessment, scenario }) {
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {result && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">
-          <p className="text-sm leading-6 text-slate-200">{result.summary}</p>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <p className="min-w-0 flex-1 text-sm leading-6 text-slate-200">{result.summary}</p>
+            <SourceBadge source={source} language={language} />
+          </div>
           <ResultList title={labels.riskFactors} items={result.riskFactors} />
           <ResultList title={labels.communityActions} items={result.communityActions} />
+          <p className="rounded-lg border border-amber-300/15 bg-amber-300/[0.04] px-3 py-2 text-[11px] leading-5 text-amber-100/80">
+            {labels.disclaimer}
+          </p>
+          <button
+            type="button"
+            onClick={copyAdvisory}
+            className="w-full rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-cyan-300/40 hover:text-white"
+          >
+            {labels.copyAdvisory}
+          </button>
+          {copyStatus && <p role="status" className="text-xs text-slate-400">{copyStatus}</p>}
         </div>
       )}
     </section>

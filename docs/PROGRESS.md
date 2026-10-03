@@ -4,7 +4,8 @@
 
 - M3: interactive Bhopal risk map with shared selection, risk legend, tile-error fallback, and Mode B placeholder labels.
 - M4: server-only Gemini structured explanation client, guarded prompt builder, deterministic English/Hindi fallback, validated `POST /api/analyze`, and in-memory per-IP rate limit.
-- Gemini does not calculate or modify scores. The endpoint accepts the client engine's computed assessment, validates its shape, and asks Gemini only for explanation text.
+- M5: responsive AI copilot panel connected to the analyze endpoint, English/Hindi and authority/resident preferences, source badge, copy advisory action, and visible medical disclaimer.
+- Gemini does not calculate or modify scores. The client sends only the current engine assessment, scenario, language, and audience to the server; credentials remain server-side.
 
 ## M4 commits
 
@@ -12,11 +13,17 @@
 - `7677690` feat(server): add prompt builder with guardrail instructions
 - `08c2995` feat(server): add deterministic offline fallback
 - `1ff217f` feat(server): add analyze endpoint with validation and rate limit
-- `test(server): cover prompt, validation and fallback paths` (this milestone's final commit; see `git log` for its hash)
+- `a9a7a0f` test(server): cover prompt, validation and fallback paths
+
+## M5 commits
+
+- `634cc9a` feat(ui): add AI copilot panel with explain-risk flow
+- `6090521` feat(ui): add language and audience toggles
+- `feat(ui): add source badge, copy advisory and disclaimer` (this milestone's final commit; see `git log` for its hash)
 
 ## Next milestone
 
-- M5: connect the explanation endpoint to the client while keeping the deterministic fallback available.
+- M6: proceed with the next approved product milestone.
 
 ## Known issues and decisions
 
