@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
+import HowWeCalculate from './components/HowWeCalculate.jsx';
 import RankedZoneList from './components/RankedZoneList.jsx';
+import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
 import { zones } from './data/zones.js';
 import { rankZones } from './utils/riskEngine.js';
@@ -18,6 +20,10 @@ function App() {
   });
   const assessments = useMemo(() => rankZones(zones, scenario), [scenario]);
   const summary = useMemo(() => buildDashboardSummary(assessments), [assessments]);
+  const selectedAssessment = useMemo(
+    () => assessments.find(({ zone }) => zone.id === selectedZoneId),
+    [assessments, selectedZoneId],
+  );
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -37,12 +43,18 @@ function App() {
           </p>
         </div>
         <SummaryStrip summary={summary} />
-        <div className="mt-5">
+        <div className="mt-5 grid items-start gap-4 lg:grid-cols-[minmax(17rem,0.85fr)_minmax(0,1.4fr)]">
           <RankedZoneList
             assessments={assessments}
             selectedZoneId={selectedZoneId}
             onSelect={setSelectedZoneId}
           />
+          {selectedAssessment && (
+            <div className="space-y-4">
+              <RiskCard assessment={selectedAssessment} scenario={scenario} />
+              <HowWeCalculate />
+            </div>
+          )}
         </div>
       </main>
     </div>
