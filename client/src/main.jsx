@@ -8,6 +8,7 @@ import RankedZoneList from './components/RankedZoneList.jsx';
 import RiskMap from './components/RiskMap.jsx';
 import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
+import ScenarioSimulator from './components/ScenarioSimulator.jsx';
 import { activeZones as zones } from './data/zones.js';
 import { rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
@@ -15,7 +16,7 @@ import './style.css';
 
 function App() {
   const [selectedZoneId, setSelectedZoneId] = useState(zones[0].id);
-  const [scenario] = useState({
+  const [scenario, setScenario] = useState({
     windSpeed: null,
     traffic: 'normal',
     industry: 'normal',
@@ -45,6 +46,9 @@ function App() {
           </p>
         </div>
         <SummaryStrip summary={summary} />
+        <div className="mt-5">
+          <ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} />
+        </div>
         <div className="mt-5">
           <RiskMap assessments={assessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
         </div>
