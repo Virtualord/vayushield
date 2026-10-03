@@ -2,20 +2,25 @@
 
 ## Completed
 
-- Interactive Bhopal risk map with population-scaled risk markers, permanent level labels, shared selection with the ranked list and risk card, four-level legend, and a tile-error notice over a plain background.
-- Mode B is enabled with `VITE_DEMO_MODE=B`; it presents three uniquely keyed zones labelled `PLACEHOLDER`.
+- M3: interactive Bhopal risk map with shared selection, risk legend, tile-error fallback, and Mode B placeholder labels.
+- M4: server-only Gemini structured explanation client, guarded prompt builder, deterministic English/Hindi fallback, validated `POST /api/analyze`, and in-memory per-IP rate limit.
+- Gemini does not calculate or modify scores. The endpoint accepts the client engine's computed assessment, validates its shape, and asks Gemini only for explanation text.
 
-## Commits
+## M4 commits
 
-- `bd14e0f` feat(map): render zones as risk-colored markers
-- `0591b3a` feat(map): sync selection between map, list and card
-- `feat(map): add legend and offline tile fallback` (this milestone's final commit; see `git log` for its hash)
+- `721d559` feat(server): add gemini client with structured output schema
+- `7677690` feat(server): add prompt builder with guardrail instructions
+- `08c2995` feat(server): add deterministic offline fallback
+- `1ff217f` feat(server): add analyze endpoint with validation and rate limit
+- `test(server): cover prompt, validation and fallback paths` (this milestone's final commit; see `git log` for its hash)
 
 ## Next milestone
 
-- Add the next requested dashboard milestone.
+- M5: connect the explanation endpoint to the client while keeping the deterministic fallback available.
 
 ## Known issues and decisions
 
-- Map tiles require network access. When a tile reports an error, markers remain on the dark map background and the UI displays “Map tiles unavailable”.
-- Mode B uses the first three illustrative input records with placeholder labels and distinct IDs; it does not introduce a second set of input values.
+- Gemini is controlled by server-only `GEMINI_API_KEY`; `GEMINI_MODEL` selects the model, defaulting to `gemini-2.5-flash`.
+- When the key is missing, the provider times out, returns an error, or gives an invalid shape, the endpoint returns a deterministic offline template.
+- Rate limiting uses process memory and resets on server restart; it is suitable for this single-process prototype.
+- Endpoint handler behavior is tested without opening a local network listener because the test sandbox denies socket binding.

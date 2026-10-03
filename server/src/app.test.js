@@ -49,4 +49,22 @@ describe('analyze request handler', () => {
     expect(outcome).toEqual({ status: 400, payload: { error: 'Invalid request body' } });
     expect(analyzeWithGemini).not.toHaveBeenCalled();
   });
+
+  it('falls back on provider errors and never includes the API key in a response', async () => {
+    const apiKey = 'test-secret-key';
+    const analyzeWithGemini = vi.fn().mockRejectedValue(new Error(`provider error: ${apiKey}`));
+    const outcome = await analyzeRequest(validBody, { apiKey, analyzeWithGemini });
+
+    expect(outcome.status).toBe(200);
+    expect(outcome.payload.source).toBe('offline-template');
+    expect(JSON.stringify(outcome.payload)).not.toContain(apiKey);
+  });
+
+  it('falls back on model output that does not match the explain schema', async () => {
+    const analyzeWithGemini = vi.fn().mockResolvedValue({ ...validResult, aqi: 120 });
+    const outcome = await analyzeRequest(validBody, { apiKey: 'test-key', analyzeWithGemini });
+
+    expect(outcome.status).toBe(200);
+    expect(outcome.payload.source).toBe('offline-template');
+  });
 });
