@@ -4,6 +4,7 @@ import {
   assessZone,
   compareScenarios,
   effectivePM25,
+  groupImpact,
   rankZones,
   riskLevel,
 } from './riskEngine.js';
@@ -58,6 +59,16 @@ describe('risk scoring', () => {
     expect(riskLevel(30)).toBe('MODERATE');
     expect(riskLevel(50)).toBe('HIGH');
     expect(riskLevel(75)).toBe('CRITICAL');
+  });
+
+  it('applies documented group sensitivity multipliers and clamps scores', () => {
+    const impacts = groupImpact({ score: 50 });
+    expect(impacts.map(({ group }) => group)).toEqual([
+      'Schools', 'Healthcare', 'Elderly', 'Outdoor workers', 'Industrial workers',
+    ]);
+    expect(impacts.find(({ group }) => group === 'Elderly')).toMatchObject({ multiplier: 1.2, score: 60, level: 'HIGH' });
+    expect(groupImpact({ score: 95 }).every(({ score }) => score <= 100)).toBe(true);
+    expect(groupImpact({ score: 0 }).every(({ score, level }) => score === 0 && level === 'LOW')).toBe(true);
   });
 });
 

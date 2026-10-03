@@ -53,6 +53,18 @@ The exported weights are 0.60 for hazard, 0.15 for exposure, and 0.25 for vulner
 
 The PM2.5 hazard cap, population cap, weights, and level thresholds are prototype choices. The vulnerability input is an illustrative 0–1 index intended to represent the assumed share or presence of schools, hospitals, and elderly residents; it is not calculated from verified facility or demographic data.
 
+## Community group impact
+
+`groupImpact(assessment)` applies fixed sensitivity multipliers to the engine-computed zone score, rounds to a whole number, clamps the result to 0–100, and assigns the same prototype risk level thresholds. These are transparent heuristics for demo comparison, not epidemiological estimates or a measure of actual harm.
+
+| Group | Heuristic multiplier |
+| --- | ---: |
+| Schools | 1.10 |
+| Healthcare | 1.15 |
+| Elderly | 1.20 |
+| Outdoor workers | 1.10 |
+| Industrial workers | 1.15 |
+
 ## Limitations
 
 This is a transparent heuristic, not a validated scientific model. Its outputs are prototype scores based on illustrative inputs, not official measurements, health guidance, a prediction, or a forecast. AQI is calculated from PM2.5 alone and should not be presented as comprehensive or official. Results should be interpreted as a demo of deterministic scenario logic, not as evidence of actual neighborhood risk.

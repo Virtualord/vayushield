@@ -9,6 +9,14 @@ const AQI_BANDS = [
 
 const LEVEL_MULTIPLIERS = { low: 0.8, normal: 1, high: 1.3 };
 
+export const COMMUNITY_SENSITIVITY = Object.freeze({
+  Schools: 1.1,
+  Healthcare: 1.15,
+  Elderly: 1.2,
+  'Outdoor workers': 1.1,
+  'Industrial workers': 1.15,
+});
+
 export const WEIGHTS = Object.freeze({
   hazard: 0.6,
   exposure: 0.15,
@@ -59,6 +67,13 @@ export function riskLevel(score) {
   if (score >= 50) return 'HIGH';
   if (score >= 30) return 'MODERATE';
   return 'LOW';
+}
+
+export function groupImpact(assessment) {
+  return Object.entries(COMMUNITY_SENSITIVITY).map(([group, multiplier]) => {
+    const score = Math.min(100, Math.max(0, Math.round(assessment.score * multiplier)));
+    return { group, multiplier, score, level: riskLevel(score) };
+  });
 }
 
 export function assessZone(zone, scenario) {
