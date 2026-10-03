@@ -103,7 +103,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Personal planner</p>
           <h3 className="mt-1 text-lg font-semibold text-white">Plan your day</h3>
-          <p className="mt-1 text-xs text-slate-500">Activity exposure is a local heuristic based on the selected zone’s prototype score.</p>
+          <p className="mt-1 text-xs text-slate-400">Activity exposure is a local heuristic based on the selected zone’s prototype score.</p>
         </div>
         {source && <SourceBadge source={source} language={language} />}
       </div>
@@ -139,7 +139,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
               <li key={event.eventId} className="grid gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-slate-100">{event.title}</p>
-                  <p className="mt-1 text-[11px] text-slate-500">{new Date(event.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · {event.setting} · {event.exertion} exertion · {event.durationMin} min</p>
+                  <p className="mt-1 text-[11px] text-slate-400">{new Date(event.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · {event.setting} · {event.exertion} exertion · {event.durationMin} min</p>
                   {event.unknownTitle && <p className="mt-1 text-[10px] text-amber-200/80">Unclassified title; using indoor, low exertion defaults.</p>}
                   {(tipsByEvent.get(event.eventId) ?? []).length > 0 && (
                     <ul className="mt-2 space-y-1 text-xs leading-5 text-slate-300">
@@ -158,7 +158,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
           </button>
           {message && <p role="status" className="mt-2 text-xs text-slate-400">{message}</p>}
         </>
-      ) : <p className="mt-4 rounded-xl border border-dashed border-slate-700 p-4 text-center text-sm text-slate-500">Load a sample day or import calendar events.</p>}
+      ) : <p className="mt-4 rounded-xl border border-dashed border-slate-700 p-4 text-center text-sm text-slate-400">Load a sample day or import calendar events.</p>}
       <p className="mt-4 rounded-lg border border-amber-300/15 bg-amber-300/[0.04] px-3 py-2 text-[11px] leading-5 text-amber-100/80">General precautions only, not medical advice.</p>
     </section>
   );
@@ -167,7 +167,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
 function ProfileToggle({ label, checked, onChange }) {
   return (
     <label className="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/50 px-3 py-2 text-xs text-slate-300">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="accent-cyan-400" />
+      <input type="checkbox" aria-label={label} checked={checked} onChange={(event) => onChange(event.target.checked)} className="accent-cyan-400" />
       {label}
     </label>
   );

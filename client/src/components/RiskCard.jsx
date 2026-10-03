@@ -20,7 +20,7 @@ export default function RiskCard({ assessment, scenario }) {
           <h3 className="mt-1 truncate text-xl font-semibold text-white sm:text-2xl">
             {zone.name}
           </h3>
-          <p className="mt-1 text-xs capitalize text-slate-500">{zone.type}</p>
+          <p className="mt-1 text-xs capitalize text-slate-400">{zone.type}</p>
         </div>
         <RiskBadge level={level} />
       </div>
@@ -30,10 +30,10 @@ export default function RiskCard({ assessment, scenario }) {
           <p className="text-xs text-slate-400">Environmental Risk Score</p>
           <p className="mt-1 text-4xl font-semibold tabular-nums tracking-tight text-white">
             {score}
-            <span className="ml-1 text-sm font-medium text-slate-500">/100</span>
+            <span className="ml-1 text-sm font-medium text-slate-400">/100</span>
           </p>
         </div>
-        <p className="mt-3 max-w-xs text-xs leading-5 text-slate-500 sm:mt-0 sm:text-right">
+        <p className="mt-3 max-w-xs text-xs leading-5 text-slate-400 sm:mt-0 sm:text-right">
           Prototype score computed from illustrative inputs using the displayed
           methodology.
         </p>
@@ -85,10 +85,10 @@ export default function RiskCard({ assessment, scenario }) {
 function Metric({ label, value, unit }) {
   return (
     <div className="min-w-0 rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-      <p className="min-h-8 text-[10px] leading-4 text-slate-500 sm:text-xs">{label}</p>
+      <p className="min-h-8 text-[10px] leading-4 text-slate-400 sm:text-xs">{label}</p>
       <p className="mt-1 break-words text-sm font-semibold tabular-nums text-white sm:text-base">
         {value}
-        {unit && <span className="ml-1 text-[10px] font-medium text-slate-500">{unit}</span>}
+        {unit && <span className="ml-1 text-[10px] font-medium text-slate-400">{unit}</span>}
       </p>
     </div>
   );

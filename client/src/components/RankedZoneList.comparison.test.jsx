@@ -10,5 +10,6 @@ describe('ranked zone scenario comparison', () => {
     expect(markup).toContain('35 → 52');
     expect(markup).toContain('MODERATE → HIGH');
     expect(markup).toContain('Changes');
+    expect(markup).toContain('aria-label="Select Example, HIGH risk, score 52"');
   });
 });

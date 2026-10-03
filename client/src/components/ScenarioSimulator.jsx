@@ -16,7 +16,7 @@ export default function ScenarioSimulator({ scenario, onScenarioChange, zones })
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         <label className="text-xs text-slate-400">
           <span className="flex justify-between"><span>Wind speed</span><span>{scenario.windSpeed == null ? 'Zone default' : `${scenario.windSpeed} km/h`}</span></span>
-          <input aria-label="Wind speed" className="mt-3 w-full accent-cyan-400" type="range" min="0.5" max="12" step="0.5" value={scenario.windSpeed ?? 0.5} onChange={(event) => update('windSpeed', Number(event.target.value))} />
+          <input aria-label="Wind speed" aria-valuetext={scenario.windSpeed == null ? 'Zone default' : `${scenario.windSpeed} km/h`} className="mt-3 w-full accent-cyan-400" type="range" min="0.5" max="12" step="0.5" value={scenario.windSpeed ?? 0.5} onChange={(event) => update('windSpeed', Number(event.target.value))} />
           <button type="button" onClick={() => update('windSpeed', null)} className="mt-1 text-[11px] text-cyan-300 hover:text-cyan-200">Zone default</button>
         </label>
         <ScenarioSelect label="Traffic" value={scenario.traffic} onChange={(value) => update('traffic', value)} />
@@ -27,7 +27,7 @@ export default function ScenarioSimulator({ scenario, onScenarioChange, zones })
           <button key={name} type="button" aria-pressed={JSON.stringify(scenario) === JSON.stringify(preset)} onClick={() => onScenarioChange(preset)} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 hover:border-cyan-300/40 hover:text-white">{name}</button>
         ))}
       </div>
-      <p className="mt-3 text-[11px] text-slate-500">Wind range: 0.5–12 km/h. Zone default uses each zone’s illustrative baseline ({zones.length} zones).</p>
+      <p className="mt-3 text-[11px] text-slate-400">Wind range: 0.5–12 km/h. Zone default uses each zone’s illustrative baseline ({zones.length} zones).</p>
     </section>
   );
 }

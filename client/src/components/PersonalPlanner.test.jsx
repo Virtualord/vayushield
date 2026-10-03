@@ -8,6 +8,8 @@ describe('personal day planner', () => {
     expect(markup).toContain('Air purifier available');
     expect(markup).toContain('Windows open');
     expect(markup).toContain('Sensitive group profile');
+    expect(markup).toContain('aria-label="Air purifier available"');
+    expect(markup).toContain('aria-label="Windows open"');
     expect(markup).toContain('Load sample day');
     expect(markup).toContain('Import pasted .ics');
     expect(markup).toContain('Upload .ics');

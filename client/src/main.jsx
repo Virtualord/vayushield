@@ -59,7 +59,7 @@ function App() {
       <main className="mx-auto max-w-7xl min-w-0 px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
               Prototype dashboard
             </p>
             <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">

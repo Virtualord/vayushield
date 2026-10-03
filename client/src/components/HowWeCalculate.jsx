@@ -34,7 +34,7 @@ export default function HowWeCalculate() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[11px] leading-5 text-slate-500">
+        <p className="mt-4 text-[11px] leading-5 text-slate-400">
           A transparent prototype heuristic, not a validated scientific model or official
           assessment. Inputs are illustrative.
         </p>

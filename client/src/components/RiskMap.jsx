@@ -3,6 +3,7 @@ import { CircleMarker, MapContainer, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { markerRadius, riskColors } from '../utils/riskMapPresentation.js';
 import MapSelectionSync from './MapSelectionSync.jsx';
+import MapControls from './MapControls.jsx';
 import RiskLegend from './RiskLegend.jsx';
 import TileFailureNotice from './TileFailureNotice.jsx';
 
@@ -26,8 +27,10 @@ export default function RiskMap({ assessments, baselineAssessments = assessments
         bounds={bounds}
         boundsOptions={{ padding: [28, 28] }}
         scrollWheelZoom={false}
+        zoomControl={false}
         className="h-72 w-full sm:h-96"
       >
+        <MapControls />
         <MapSelectionSync assessments={assessments} selectedZoneId={selectedZoneId} />
         <TileFailureNotice />
         {assessments.map(({ zone, level }) => {

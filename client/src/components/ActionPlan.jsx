@@ -72,7 +72,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {plan && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">
-          <p className="text-[11px] text-slate-500">Based on the active scenario and the top three engine-ranked zones. Inputs are illustrative.</p>
+          <p className="text-[11px] text-slate-400">Based on the active scenario and the top three engine-ranked zones. Inputs are illustrative.</p>
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-400">Priority actions</h4>
             <div className="mt-2 space-y-3">
@@ -81,7 +81,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
                   <h5 className="text-xs font-semibold text-cyan-200">{group}</h5>
                   <ul className="mt-1 space-y-1 text-sm leading-5 text-slate-300">
                     {plan.priorityActions.filter((action) => action.group === group).map((action, index) => (
-                      <li key={`${action.zoneId}-${index}`}><span className="text-slate-500">{rankedZones.find(({ zone }) => zone.id === action.zoneId)?.zone.name}: </span>{action.action}</li>
+                      <li key={`${action.zoneId}-${index}`}><span className="text-slate-400">{rankedZones.find(({ zone }) => zone.id === action.zoneId)?.zone.name}: </span>{action.action}</li>
                     ))}
                   </ul>
                 </section>
