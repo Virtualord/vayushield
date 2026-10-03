@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { analyzeZone } from '../services/api.js';
+import { copilotLabels } from './copilotLabels.js';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [audience, setAudience] = useState('authority');
+  const labels = copilotLabels[language];
 
   async function explainRisk() {
     setIsLoading(true);
     setError('');
     try {
-      const response = await analyzeZone(assessment, scenario, 'en', 'authority');
+      const response = await analyzeZone(assessment, scenario, language, audience);
       setResult(response.result);
     } catch (requestError) {
       setError(requestError.message);
@@ -23,24 +27,46 @@ export default function AICopilot({ assessment, scenario }) {
     <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
-          AI copilot
+          {labels.heading}
         </p>
-        <h3 className="mt-1 text-lg font-semibold text-white">Explain this risk</h3>
+        <h3 className="mt-1 text-lg font-semibold text-white">{labels.subheading}</h3>
       </div>
+      <PreferenceToggle
+        label={labels.language}
+        value={language}
+        options={[
+          { value: 'en', label: labels.english },
+          { value: 'hi', label: labels.hindi },
+        ]}
+        onChange={setLanguage}
+        clearResult={() => { setResult(null); setError(''); }}
+        disabled={isLoading}
+      />
+      <PreferenceToggle
+        label={labels.audience}
+        value={audience}
+        options={[
+          { value: 'authority', label: labels.authority },
+          { value: 'resident', label: labels.resident },
+        ]}
+        onChange={setAudience}
+        clearResult={() => { setResult(null); setError(''); }}
+        disabled={isLoading}
+      />
       <button
         type="button"
         onClick={explainRisk}
         disabled={isLoading}
         className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300 disabled:cursor-wait disabled:opacity-60"
       >
-        {isLoading ? 'Generating explanation…' : 'Explain risk'}
+        {isLoading ? labels.loading : labels.explain}
       </button>
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {result && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">
           <p className="text-sm leading-6 text-slate-200">{result.summary}</p>
-          <ResultList title="Risk factors" items={result.riskFactors} />
-          <ResultList title="Community actions" items={result.communityActions} />
+          <ResultList title={labels.riskFactors} items={result.riskFactors} />
+          <ResultList title={labels.communityActions} items={result.communityActions} />
         </div>
       )}
     </section>
@@ -55,5 +81,35 @@ function ResultList({ title, items }) {
         {items.map((item, index) => <li key={`${title}-${index}`}>{item}</li>)}
       </ul>
     </div>
+  );
+}
+
+function PreferenceToggle({ label, value, options, onChange, clearResult, disabled }) {
+  return (
+    <fieldset className="mt-4">
+      <legend className="mb-2 text-xs font-medium text-slate-400">{label}</legend>
+      <div className="grid grid-cols-2 gap-2">
+        {options.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            disabled={disabled}
+            aria-pressed={value === option.value}
+            onClick={() => {
+              if (value === option.value) return;
+              onChange(option.value);
+              clearResult();
+            }}
+            className={`rounded-lg border px-2 py-2 text-xs font-medium transition-colors ${
+              value === option.value
+                ? 'border-cyan-300/50 bg-cyan-300/10 text-cyan-100'
+                : 'border-slate-700 bg-slate-950/60 text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </fieldset>
   );
 }
