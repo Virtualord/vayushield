@@ -10,6 +10,7 @@ import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
 import ScenarioSimulator from './components/ScenarioSimulator.jsx';
 import CommunityImpact from './components/CommunityImpact.jsx';
+import ActionPlan from './components/ActionPlan.jsx';
 import { activeZones as zones } from './data/zones.js';
 import { compareScenarios, groupImpact, rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
@@ -27,6 +28,7 @@ function App() {
   const baselineAssessments = useMemo(() => rankZones(zones, baselineScenario), []);
   const comparisons = useMemo(() => compareScenarios(zones, baselineScenario, scenario), [scenario]);
   const summary = useMemo(() => buildDashboardSummary(assessments), [assessments]);
+  const topRankedZones = useMemo(() => assessments.slice(0, 3), [assessments]);
   const selectedAssessment = useMemo(
     () => assessments.find(({ zone }) => zone.id === selectedZoneId),
     [assessments, selectedZoneId],
@@ -79,6 +81,7 @@ function App() {
                 />
               </div>
               <CommunityImpact impacts={selectedGroupImpact} zoneName={selectedAssessment.zone.name} />
+              <ActionPlan rankedZones={topRankedZones} scenario={scenario} />
               <HowWeCalculate />
             </div>
           )}

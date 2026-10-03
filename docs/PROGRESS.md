@@ -7,6 +7,7 @@
 - M5: responsive AI copilot panel connected to the analyze endpoint, English/Hindi and authority/resident preferences, source badge, copy advisory action, and visible medical disclaimer.
 - Gemini does not calculate or modify scores. The client sends only the current engine assessment, scenario, language, and audience to the server; credentials remain server-side.
 - M6: interactive what-if controls and presets, instant engine recomputation, baseline rings and scenario fills on the map, ranked score comparisons, a risk-level Changes table, and scenario-specific AI explanations.
+- M7: documented heuristic community-group score impacts, selected-zone community impact view, validated/rate-limited `POST /api/plan`, deterministic offline plan fallback, and action plan UI with source and advisory copy.
 
 ## M4 commits
 
@@ -28,6 +29,13 @@
 - `614fac0` feat(sim): add before/after comparison on map and list
 - `feat(sim): pass active scenario to ai explanations` (see `git log` for its hash)
 
+## M7 commits
+
+- `98d9ff2` feat(engine): add community group impact scoring with tests
+- `56ba0b7` feat(ui): add community impact view
+- `0974185` feat(server): add action plan endpoint with schema and fallback
+- `feat(ui): add action plan panel with advisory copy` (see `git log` for its hash)
+
 ## Next milestone
 
 - Await the next approved product milestone.
@@ -39,3 +47,4 @@
 - Rate limiting uses process memory and resets on server restart; it is suitable for this single-process prototype.
 - Endpoint handler behavior is tested without opening a local network listener because the test sandbox denies socket binding.
 - Baseline is zone-specific wind with normal traffic and industry; scenario inputs remain illustrative and are not forecasts.
+- Community sensitivity multipliers are documented heuristics, not health impact estimates. Action plans consume only the three current ranked engine assessments and the active scenario; offline mode includes scenario context deterministically.
