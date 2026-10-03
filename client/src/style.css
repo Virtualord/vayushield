@@ -1,1 +1,21 @@
 @import 'tailwindcss';
+
+.risk-map {
+  background: #0f172a;
+}
+
+.risk-map .leaflet-container {
+  background: #0f172a;
+  font-family: inherit;
+}
+
+.risk-map-label {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: white;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px #020617, 1px 0 3px #020617, 0 -1px 3px #020617;
+}

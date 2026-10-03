@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
 import HowWeCalculate from './components/HowWeCalculate.jsx';
 import RankedZoneList from './components/RankedZoneList.jsx';
+import RiskMap from './components/RiskMap.jsx';
 import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
 import { zones } from './data/zones.js';
@@ -43,6 +44,9 @@ function App() {
           </p>
         </div>
         <SummaryStrip summary={summary} />
+        <div className="mt-5">
+          <RiskMap assessments={assessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
+        </div>
         <div className="mt-5 grid items-start gap-4 lg:grid-cols-[minmax(17rem,0.85fr)_minmax(0,1.4fr)]">
           <RankedZoneList
             assessments={assessments}
