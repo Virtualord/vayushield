@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
+import RankedZoneList from './components/RankedZoneList.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
 import { zones } from './data/zones.js';
 import { rankZones } from './utils/riskEngine.js';
@@ -9,6 +10,7 @@ import { buildDashboardSummary } from './utils/dashboardSummary.js';
 import './style.css';
 
 function App() {
+  const [selectedZoneId, setSelectedZoneId] = useState(zones[0].id);
   const [scenario] = useState({
     windSpeed: null,
     traffic: 'normal',
@@ -35,6 +37,13 @@ function App() {
           </p>
         </div>
         <SummaryStrip summary={summary} />
+        <div className="mt-5">
+          <RankedZoneList
+            assessments={assessments}
+            selectedZoneId={selectedZoneId}
+            onSelect={setSelectedZoneId}
+          />
+        </div>
       </main>
     </div>
   );
