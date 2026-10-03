@@ -1,0 +1,5 @@
+[
+  { "id": "calm-winter-night", "name": "Calm winter night", "scenario": { "windSpeed": 0.5, "traffic": "high", "industry": "high" } },
+  { "id": "typical-day", "name": "Typical day", "scenario": { "windSpeed": null, "traffic": "normal", "industry": "normal" } },
+  { "id": "clear-windy-day", "name": "Clear windy day", "scenario": { "windSpeed": 8, "traffic": "normal", "industry": "low" } }
+]

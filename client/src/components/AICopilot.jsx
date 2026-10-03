@@ -3,6 +3,7 @@ import { analyzeZone } from '../services/api.js';
 import { copilotLabels } from './copilotLabels.js';
 import SourceBadge from './SourceBadge.jsx';
 import { copyToClipboard } from '../utils/copyToClipboard.js';
+import { announceDemoMode } from '../utils/demoMode.js';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
@@ -27,6 +28,7 @@ export default function AICopilot({ assessment, scenario }) {
       const response = await analyzeZone(assessment, scenario, language, audience);
       setResult(response.result);
       setSource(response.source);
+      if (response.source !== 'gemini') announceDemoMode('ai-fallback');
       setCopyStatus('');
     } catch (requestError) {
       setError(requestError.message);

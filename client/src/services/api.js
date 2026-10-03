@@ -1,3 +1,5 @@
+import { announceDemoMode } from '../utils/demoMode.js';
+
 export async function analyzeZone(assessment, scenario, language, audience) {
   let response;
   try {
@@ -7,15 +9,20 @@ export async function analyzeZone(assessment, scenario, language, audience) {
       body: JSON.stringify({ assessment, scenario, language, audience }),
     });
   } catch {
+    announceDemoMode('ai-request-failed');
     throw new Error('Could not reach the analysis service. Try again.');
   }
 
-  if (!response.ok) throw new Error('The analysis request could not be completed.');
+  if (!response.ok) {
+    announceDemoMode('ai-request-failed');
+    throw new Error('The analysis request could not be completed.');
+  }
 
   let payload;
   try {
     payload = await response.json();
   } catch {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The analysis service returned an unreadable response.');
   }
 
@@ -24,6 +31,7 @@ export async function analyzeZone(assessment, scenario, language, audience) {
     !payload.result ||
     !['gemini', 'offline-template'].includes(payload.source)
   ) {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The analysis service returned an invalid response.');
   }
 

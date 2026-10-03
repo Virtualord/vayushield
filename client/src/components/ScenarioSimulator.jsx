@@ -1,9 +1,6 @@
+import presets from '../data/scenarioPresets.json';
+
 const baselineScenario = { windSpeed: null, traffic: 'normal', industry: 'normal' };
-const presets = [
-  { name: 'Calm winter night', scenario: { windSpeed: 0.5, traffic: 'high', industry: 'high' } },
-  { name: 'Typical day', scenario: baselineScenario },
-  { name: 'Clear windy day', scenario: { windSpeed: 8, traffic: 'normal', industry: 'low' } },
-];
 
 export default function ScenarioSimulator({ scenario, onScenarioChange, zones }) {
   const update = (key, value) => onScenarioChange({ ...scenario, [key]: value });

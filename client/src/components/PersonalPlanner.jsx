@@ -6,6 +6,7 @@ import { riskColors } from '../utils/riskMapPresentation.js';
 import { requestDayPlan } from '../services/planDayApi.js';
 import SourceBadge from './SourceBadge.jsx';
 import { parseIcsCalendar } from '../utils/icsParser.js';
+import { announceDemoMode } from '../utils/demoMode.js';
 
 const levelIcons = { CRITICAL: '⚠', HIGH: '▲', MODERATE: '◆', LOW: '✓' };
 
@@ -52,8 +53,10 @@ export default function PersonalPlanner({ zoneAssessment }) {
     try {
       const response = await requestDayPlan(classifiedEvents, profile, language);
       setGeneratedPlan(response);
+      if (response.source !== 'gemini') announceDemoMode('ai-fallback');
     } catch {
       setGeneratedPlan({ result: fallbackPlan, source: 'offline-template' });
+      announceDemoMode('ai-request-failed');
       setMessage(language === 'hi' ? 'ऑफ़लाइन टेम्पलेट से योजना बनाई गई।' : 'Using the local offline template.');
     } finally {
       setLoading(false);

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
@@ -12,12 +12,15 @@ import ScenarioSimulator from './components/ScenarioSimulator.jsx';
 import CommunityImpact from './components/CommunityImpact.jsx';
 import ActionPlan from './components/ActionPlan.jsx';
 import PersonalPlanner from './components/PersonalPlanner.jsx';
+import DemoModeBanner from './components/DemoModeBanner.jsx';
+import { announceDemoMode, demoModeEventName } from './utils/demoMode.js';
 import { activeZones as zones } from './data/zones.js';
 import { compareScenarios, groupImpact, rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
 import './style.css';
 
 function App() {
+  const [demoMode, setDemoMode] = useState(false);
   const [selectedZoneId, setSelectedZoneId] = useState(zones[0].id);
   const [scenario, setScenario] = useState({
     windSpeed: null,
@@ -39,8 +42,20 @@ function App() {
     [selectedAssessment],
   );
 
+  useEffect(() => {
+    const onDemoMode = () => setDemoMode(true);
+    window.addEventListener(demoModeEventName, onDemoMode);
+    fetch('/api/health')
+      .then((response) => {
+        if (!response.ok) throw new Error('Health check failed');
+      })
+      .catch(() => announceDemoMode('health-check'));
+    return () => window.removeEventListener(demoModeEventName, onDemoMode);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
+      <DemoModeBanner visible={demoMode} />
       <DashboardHeader />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

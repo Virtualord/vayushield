@@ -1,3 +1,5 @@
+import { announceDemoMode } from '../utils/demoMode.js';
+
 export async function requestActionPlan(rankedZones, scenario, language, audience) {
   let response;
   try {
@@ -7,17 +9,23 @@ export async function requestActionPlan(rankedZones, scenario, language, audienc
       body: JSON.stringify({ rankedZones, scenario, language, audience }),
     });
   } catch {
+    announceDemoMode('ai-request-failed');
     throw new Error('Could not reach the planning service. Try again.');
   }
 
-  if (!response.ok) throw new Error('The response plan could not be generated.');
+  if (!response.ok) {
+    announceDemoMode('ai-request-failed');
+    throw new Error('The response plan could not be generated.');
+  }
   let payload;
   try {
     payload = await response.json();
   } catch {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The planning service returned an unreadable response.');
   }
   if (!payload?.result || !['gemini', 'offline-template'].includes(payload.source)) {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The planning service returned an invalid response.');
   }
   return payload;

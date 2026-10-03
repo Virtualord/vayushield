@@ -1,3 +1,5 @@
+import { announceDemoMode } from '../utils/demoMode.js';
+
 export async function requestDayPlan(events, profile, language) {
   const titleFreeEvents = events.map(({ eventId, setting, exertion, durationMin, startTime, exposure, level }) => ({
     eventId, setting, exertion, durationMin, startTime, exposure, level,
@@ -10,16 +12,22 @@ export async function requestDayPlan(events, profile, language) {
       body: JSON.stringify({ events: titleFreeEvents, profile, language }),
     });
   } catch {
+    announceDemoMode('ai-request-failed');
     throw new Error('Could not reach the planning service.');
   }
-  if (!response.ok) throw new Error('The day plan request could not be completed.');
+  if (!response.ok) {
+    announceDemoMode('ai-request-failed');
+    throw new Error('The day plan request could not be completed.');
+  }
   let payload;
   try {
     payload = await response.json();
   } catch {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The planning service returned an unreadable response.');
   }
   if (!payload?.result || !['gemini', 'offline-template'].includes(payload.source)) {
+    announceDemoMode('ai-response-invalid');
     throw new Error('The planning service returned an invalid response.');
   }
   return payload;

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { requestActionPlan } from '../services/planApi.js';
 import { copyToClipboard } from '../utils/copyToClipboard.js';
 import SourceBadge from './SourceBadge.jsx';
+import { announceDemoMode } from '../utils/demoMode.js';
 
 export default function ActionPlan({ rankedZones, scenario }) {
   const [language, setLanguage] = useState('en');
@@ -25,6 +26,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
       const response = await requestActionPlan(rankedZones, scenario, language, audience);
       setPlan(response.result);
       setSource(response.source);
+      if (response.source !== 'gemini') announceDemoMode('ai-fallback');
     } catch (requestError) {
       setError(requestError.message);
     } finally {
