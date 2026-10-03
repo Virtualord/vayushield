@@ -18,7 +18,14 @@ export function selectHabitCandidates(event, profile, language) {
     const preferredId = profile.windowsOpen ? 'window-open-guidance' : 'window-closed-guidance';
     matches = matches.filter(({ id }) => !id.startsWith('window-'));
     const preferred = habits.find(({ id }) => id === preferredId);
-    if (severity[preferred.minLevel] <= severity[event.level]) matches.unshift(preferred);
+    const secondChoiceId = profile.hasPurifier ? 'purifier-follow-manual' : 'review-indoor-notices';
+    const secondChoice = habits.find(({ id }) => id === secondChoiceId);
+    for (const choice of [secondChoice, preferred]) {
+      if (severity[choice.minLevel] <= severity[event.level]) {
+        matches = matches.filter(({ id }) => id !== choice.id);
+        matches.unshift(choice);
+      }
+    }
   }
   return matches.map(({ id, text_en, text_hi, minLevel }) => ({ id, text: language === 'hi' ? text_hi : text_en, minLevel }));
 }

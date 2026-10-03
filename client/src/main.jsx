@@ -11,6 +11,7 @@ import SummaryStrip from './components/SummaryStrip.jsx';
 import ScenarioSimulator from './components/ScenarioSimulator.jsx';
 import CommunityImpact from './components/CommunityImpact.jsx';
 import ActionPlan from './components/ActionPlan.jsx';
+import PersonalPlanner from './components/PersonalPlanner.jsx';
 import { activeZones as zones } from './data/zones.js';
 import { compareScenarios, groupImpact, rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
@@ -82,6 +83,7 @@ function App() {
               </div>
               <CommunityImpact impacts={selectedGroupImpact} zoneName={selectedAssessment.zone.name} />
               <ActionPlan rankedZones={topRankedZones} scenario={scenario} />
+              <PersonalPlanner zoneAssessment={selectedAssessment} />
               <HowWeCalculate />
             </div>
           )}
