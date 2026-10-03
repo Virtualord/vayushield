@@ -1,10 +1,11 @@
 export default function SourceBadge({ source, language }) {
   const isGemini = source === 'gemini';
-  const label = isGemini
-    ? 'Gemini'
-    : language === 'hi'
-      ? 'ऑफ़लाइन टेम्पलेट'
-      : 'Offline template';
+  const labels = {
+    gemini: 'Gemini',
+    'demo-cache': language === 'hi' ? 'डेमो कैश' : 'Demo cache',
+    'offline-template': language === 'hi' ? 'ऑफ़लाइन टेम्पलेट' : 'Offline template',
+  };
+  const label = labels[source] ?? labels['offline-template'];
 
   return (
     <span

@@ -17,15 +17,15 @@ const payload = {
 };
 
 describe('analyzeZone API client', () => {
-  it('posts only the assessment, scenario, language, and audience', async () => {
+  it('posts the assessment, active scenario, preferences, and preset id', async () => {
     const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
     vi.stubGlobal('fetch', fetch);
 
-    await expect(analyzeZone(assessment, scenario, 'hi', 'resident')).resolves.toEqual(payload);
+    await expect(analyzeZone(assessment, scenario, 'hi', 'resident', 'typical-day')).resolves.toEqual(payload);
     expect(fetch).toHaveBeenCalledWith('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ assessment, scenario, language: 'hi', audience: 'resident' }),
+      body: JSON.stringify({ assessment, scenario, language: 'hi', audience: 'resident', presetId: 'typical-day' }),
     });
     expect(fetch.mock.calls[0][1].body).not.toContain('GEMINI_API_KEY');
   });

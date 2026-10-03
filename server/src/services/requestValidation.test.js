@@ -15,6 +15,7 @@ const validBody = {
   scenario: { windSpeed: null, traffic: 'normal', industry: 'normal' },
   language: 'en',
   audience: 'resident',
+  presetId: 'typical-day',
 };
 
 describe('analyze request validation', () => {
@@ -25,6 +26,7 @@ describe('analyze request validation', () => {
   it('rejects missing fields, invalid enums, inconsistent zone data and extra keys', () => {
     expect(isValidAnalyzeBody({ ...validBody, audience: undefined })).toBe(false);
     expect(isValidAnalyzeBody({ ...validBody, language: 'fr' })).toBe(false);
+    expect(isValidAnalyzeBody({ ...validBody, presetId: 'clear-windy-day' })).toBe(false);
     expect(isValidAnalyzeBody({ ...validBody, assessment: { ...validBody.assessment, score: NaN } })).toBe(false);
     expect(isValidAnalyzeBody({ ...validBody, extra: true })).toBe(false);
     expect(isValidAnalyzeBody({

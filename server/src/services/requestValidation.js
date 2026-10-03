@@ -1,3 +1,5 @@
+import demoPresets from '../../../client/src/data/scenarioPresets.json' with { type: 'json' };
+
 const assessmentFields = [
   'zone', 'effectivePM25', 'aqi', 'category', 'score', 'level',
   'hazard', 'exposure', 'vulnerability',
@@ -57,27 +59,36 @@ function isValidAssessment(assessment) {
   );
 }
 
+function hasMatchingPreset(scenario, presetId) {
+  const match = demoPresets.find(({ scenario: candidate }) =>
+    candidate.windSpeed === scenario.windSpeed && candidate.traffic === scenario.traffic && candidate.industry === scenario.industry,
+  );
+  return presetId === (match?.id ?? 'custom');
+}
+
 export function isValidAnalyzeBody(body) {
-  if (!hasExactFields(body, ['assessment', 'scenario', 'language', 'audience'])) return false;
+  if (!hasExactFields(body, ['assessment', 'scenario', 'language', 'audience', 'presetId'])) return false;
   if (!isValidAssessment(body.assessment)) return false;
   if (!hasExactFields(body.scenario, scenarioFields)) return false;
   return (
     (body.scenario.windSpeed === null || isFiniteNumber(body.scenario.windSpeed, 0)) &&
     scenarioLevels.has(body.scenario.traffic) &&
     scenarioLevels.has(body.scenario.industry) &&
+    typeof body.presetId === 'string' && hasMatchingPreset(body.scenario, body.presetId) &&
     ['en', 'hi'].includes(body.language) &&
     ['authority', 'resident'].includes(body.audience)
   );
 }
 
 export function isValidPlanBody(body) {
-  if (!hasExactFields(body, ['rankedZones', 'scenario', 'language', 'audience'])) return false;
+  if (!hasExactFields(body, ['rankedZones', 'scenario', 'language', 'audience', 'presetId'])) return false;
   if (!Array.isArray(body.rankedZones) || body.rankedZones.length !== 3 || !body.rankedZones.every(isValidAssessment)) return false;
   if (body.rankedZones[0].score < body.rankedZones[1].score || body.rankedZones[1].score < body.rankedZones[2].score) return false;
   if (!hasExactFields(body.scenario, scenarioFields)) return false;
   return (
     (body.scenario.windSpeed === null || isFiniteNumber(body.scenario.windSpeed, 0)) &&
     scenarioLevels.has(body.scenario.traffic) && scenarioLevels.has(body.scenario.industry) &&
+    typeof body.presetId === 'string' && hasMatchingPreset(body.scenario, body.presetId) &&
     ['en', 'hi'].includes(body.language) && ['authority', 'resident'].includes(body.audience)
   );
 }

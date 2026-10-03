@@ -10,10 +10,10 @@ describe('action plan API client', () => {
     const payload = { result: { priorityActions: [], monitoringPlan: [], advisoryMessage: '', caveat: '' }, source: 'offline-template' };
     const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => payload });
     vi.stubGlobal('fetch', fetch);
-    await expect(requestActionPlan(rankedZones, scenario, 'hi', 'resident')).resolves.toEqual(payload);
+    await expect(requestActionPlan(rankedZones, scenario, 'hi', 'resident', 'clear-windy-day')).resolves.toEqual(payload);
     expect(fetch).toHaveBeenCalledWith('/api/plan', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rankedZones, scenario, language: 'hi', audience: 'resident' }),
+      body: JSON.stringify({ rankedZones, scenario, language: 'hi', audience: 'resident', presetId: 'clear-windy-day' }),
     });
   });
 

@@ -4,6 +4,7 @@ import { copilotLabels } from './copilotLabels.js';
 import SourceBadge from './SourceBadge.jsx';
 import { copyToClipboard } from '../utils/copyToClipboard.js';
 import { announceDemoMode } from '../utils/demoMode.js';
+import { getScenarioPresetId } from '../utils/scenarioPreset.js';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
@@ -25,7 +26,7 @@ export default function AICopilot({ assessment, scenario }) {
     setIsLoading(true);
     setError('');
     try {
-      const response = await analyzeZone(assessment, scenario, language, audience);
+      const response = await analyzeZone(assessment, scenario, language, audience, getScenarioPresetId(scenario));
       setResult(response.result);
       setSource(response.source);
       if (response.source !== 'gemini') announceDemoMode('ai-fallback');

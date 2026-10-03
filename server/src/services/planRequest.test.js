@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { planRequest } from './planRequest.js';
 import { buildPlanPrompt } from './planPrompt.js';
 import { isValidPlanBody, isValidPlanResult } from './requestValidation.js';
+import { demoCacheKey } from './demoCacheKey.js';
 
 const makeAssessment = (id, score) => ({
   zone: {
@@ -16,9 +17,10 @@ const makeAssessment = (id, score) => ({
 const rankedZones = [makeAssessment('one', 60), makeAssessment('two', 50), makeAssessment('three', 40)];
 const validBody = {
   rankedZones,
-  scenario: { windSpeed: 8, traffic: 'high', industry: 'low' },
+  scenario: { windSpeed: 8, traffic: 'normal', industry: 'low' },
   language: 'en',
   audience: 'resident',
+  presetId: 'clear-windy-day',
 };
 const validResult = {
   priorityActions: [{ group: 'Schools', zoneId: 'one', action: 'Share public updates.' }],
@@ -46,8 +48,18 @@ describe('plan request validation and response', () => {
     expect(outcome.status).toBe(200);
     expect(outcome.payload.source).toBe('offline-template');
     expect(outcome.payload.result.priorityActions[0].zoneId).toBe('one');
-    expect(outcome.payload.result.monitoringPlan[0]).toContain('wind 8 km/h, traffic high, industry low');
+    expect(outcome.payload.result.monitoringPlan[0]).toContain('wind 8 km/h, traffic normal, industry low');
     expect(planWithGemini).not.toHaveBeenCalled();
+  });
+
+  it('uses a matching cached plan when no key is configured or live generation fails', async () => {
+    const entry = { presetId: 'clear-windy-day', language: 'en', audience: 'resident', mode: 'plan', result: validResult };
+    const demoCache = { entries: { [demoCacheKey(entry.presetId, entry.language, entry.audience, entry.mode)]: entry } };
+    const cached = await planRequest(validBody, { apiKey: '', planWithGemini: vi.fn(), demoCache });
+    expect(cached.payload).toEqual({ result: validResult, source: 'demo-cache' });
+
+    const failedLive = await planRequest(validBody, { apiKey: 'configured', planWithGemini: vi.fn().mockRejectedValue(new Error('offline')), demoCache });
+    expect(failedLive.payload.source).toBe('demo-cache');
   });
 
   it('sends scenario and ranked engine inputs to Gemini and falls back on invalid output', async () => {

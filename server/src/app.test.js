@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { analyzeRequest } from './services/analyzeRequest.js';
+import { demoCacheKey } from './services/demoCacheKey.js';
 
 const validBody = {
   assessment: {
@@ -15,6 +16,7 @@ const validBody = {
   scenario: { windSpeed: null, traffic: 'normal', industry: 'normal' },
   language: 'en',
   audience: 'resident',
+  presetId: 'typical-day',
 };
 
 const validResult = {
@@ -33,6 +35,20 @@ describe('analyze request handler', () => {
     expect(outcome.payload.source).toBe('offline-template');
     expect(outcome.payload.result.summary).toContain('20 (low)');
     expect(analyzeWithGemini).not.toHaveBeenCalled();
+  });
+
+  it('uses a matching cached explanation when no key is configured', async () => {
+    const entry = { presetId: 'typical-day', language: 'en', audience: 'resident', mode: 'explain', result: validResult };
+    const demoCache = { entries: { [demoCacheKey(entry.presetId, entry.language, entry.audience, entry.mode)]: entry } };
+    const outcome = await analyzeRequest(validBody, { apiKey: '', analyzeWithGemini: vi.fn(), demoCache });
+    expect(outcome).toEqual({ status: 200, payload: { result: validResult, source: 'demo-cache' } });
+  });
+
+  it('uses a matching cache after the live explanation call fails', async () => {
+    const entry = { presetId: 'typical-day', language: 'en', audience: 'resident', mode: 'explain', result: validResult };
+    const demoCache = { entries: { [demoCacheKey(entry.presetId, entry.language, entry.audience, entry.mode)]: entry } };
+    const outcome = await analyzeRequest(validBody, { apiKey: 'configured', analyzeWithGemini: vi.fn().mockRejectedValue(new Error('offline')), demoCache });
+    expect(outcome.payload.source).toBe('demo-cache');
   });
 
   it('returns a validated Gemini result when configured', async () => {

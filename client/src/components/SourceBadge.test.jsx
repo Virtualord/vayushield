@@ -7,5 +7,7 @@ describe('copilot source badge', () => {
     expect(renderToStaticMarkup(<SourceBadge source="gemini" language="en" />)).toContain('Gemini');
     expect(renderToStaticMarkup(<SourceBadge source="offline-template" language="en" />)).toContain('Offline template');
     expect(renderToStaticMarkup(<SourceBadge source="offline-template" language="hi" />)).toContain('ऑफ़लाइन टेम्पलेट');
+    expect(renderToStaticMarkup(<SourceBadge source="demo-cache" language="en" />)).toContain('Demo cache');
+    expect(renderToStaticMarkup(<SourceBadge source="demo-cache" language="en" />)).toContain('Demo cache');
   });
 });

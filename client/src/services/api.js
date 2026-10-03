@@ -1,12 +1,12 @@
 import { announceDemoMode } from '../utils/demoMode.js';
 
-export async function analyzeZone(assessment, scenario, language, audience) {
+export async function analyzeZone(assessment, scenario, language, audience, presetId = 'custom') {
   let response;
   try {
     response = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ assessment, scenario, language, audience }),
+      body: JSON.stringify({ assessment, scenario, language, audience, presetId }),
     });
   } catch {
     announceDemoMode('ai-request-failed');
@@ -29,7 +29,7 @@ export async function analyzeZone(assessment, scenario, language, audience) {
   if (
     !payload ||
     !payload.result ||
-    !['gemini', 'offline-template'].includes(payload.source)
+    !['gemini', 'demo-cache', 'offline-template'].includes(payload.source)
   ) {
     announceDemoMode('ai-response-invalid');
     throw new Error('The analysis service returned an invalid response.');
