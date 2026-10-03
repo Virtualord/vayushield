@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { analyzeZone } from '../services/api.js';
 import { copilotLabels } from './copilotLabels.js';
 import SourceBadge from './SourceBadge.jsx';
@@ -13,6 +13,12 @@ export default function AICopilot({ assessment, scenario }) {
   const [source, setSource] = useState('');
   const [copyStatus, setCopyStatus] = useState('');
   const labels = copilotLabels[language];
+
+  useEffect(() => {
+    setResult(null);
+    setSource('');
+    setCopyStatus('');
+  }, [scenario.windSpeed, scenario.traffic, scenario.industry]);
 
   async function explainRisk() {
     setIsLoading(true);
@@ -79,6 +85,7 @@ export default function AICopilot({ assessment, scenario }) {
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {result && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">
+          <p className="text-[11px] text-slate-500">Explanation requested for: wind {scenario.windSpeed == null ? 'zone default' : `${scenario.windSpeed} km/h`}, traffic {scenario.traffic}, industry {scenario.industry}.</p>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <p className="min-w-0 flex-1 text-sm leading-6 text-slate-200">{result.summary}</p>
             <SourceBadge source={source} language={language} />

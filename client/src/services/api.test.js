@@ -4,7 +4,7 @@ import { analyzeZone } from './api.js';
 afterEach(() => vi.unstubAllGlobals());
 
 const assessment = { score: 44, level: 'MODERATE', zone: { id: 'zone-a' } };
-const scenario = { windSpeed: null, traffic: 'normal', industry: 'normal' };
+const scenario = { windSpeed: 8, traffic: 'high', industry: 'low' };
 const payload = {
   result: {
     summary: 'Summary',
