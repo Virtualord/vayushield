@@ -16,10 +16,10 @@ export default function RiskMap({ assessments, baselineAssessments = assessments
     : [BHOPAL_CENTER];
 
   return (
-    <div>
+    <div className="map-region">
       <section
         aria-label="Environmental risk map"
-        className="risk-map relative overflow-hidden rounded-t-2xl border border-slate-800 border-b-0"
+        className="risk-map absolute inset-0 overflow-hidden"
       >
         <MapContainer
         center={BHOPAL_CENTER}
@@ -28,7 +28,7 @@ export default function RiskMap({ assessments, baselineAssessments = assessments
         boundsOptions={{ padding: [28, 28] }}
         scrollWheelZoom={false}
         zoomControl={false}
-        className="h-72 w-full sm:h-96"
+        className="h-full w-full"
       >
         <MapControls />
         <MapSelectionSync assessments={assessments} selectedZoneId={selectedZoneId} />
@@ -52,8 +52,7 @@ export default function RiskMap({ assessments, baselineAssessments = assessments
         })}
         </MapContainer>
       </section>
-      <RiskLegend />
-      <p className="rounded-b-2xl border border-t-0 border-slate-800 bg-slate-900/60 px-4 py-2 text-[11px] text-slate-400">Inner fill: scenario level · outer ring: baseline level</p>
+      <div className="map-legend glass-panel"><RiskLegend /><p>Inner fill: scenario level · outer ring: baseline level</p></div>
     </div>
   );
 }

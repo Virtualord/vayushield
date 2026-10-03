@@ -13,6 +13,7 @@ import CommunityImpact from './components/CommunityImpact.jsx';
 import ActionPlan from './components/ActionPlan.jsx';
 import PersonalPlanner from './components/PersonalPlanner.jsx';
 import DemoModeBanner from './components/DemoModeBanner.jsx';
+import presets from './data/scenarioPresets.json';
 import { announceDemoMode, demoModeEventName } from './utils/demoMode.js';
 import { checkApiHealth } from './services/healthCheck.js';
 import { activeZones as zones } from './data/zones.js';
@@ -74,29 +75,15 @@ function App() {
   return (
     <div className="app-shell min-h-screen">
       <DemoModeBanner visible={demoMode} />
-      <DashboardHeader theme={theme} onThemeChange={setTheme} />
-      <main className="mx-auto max-w-7xl min-w-0 px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-              Prototype dashboard
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">
-              Neighborhood overview
-            </h2>
+      <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
+      <DashboardHeader theme={theme} onThemeChange={setTheme} scenario={scenario} onScenarioChange={setScenario} presets={presets} />
+      <main className="map-dashboard">
+        <aside className="dashboard-sidebar glass-panel">
+          <div className="sidebar-heading">
+            <div><p className="eyebrow">Prototype dashboard</p><h2>Neighborhood overview</h2></div>
+            <span>{zones.length} zones</span>
           </div>
-          <p className="text-sm text-slate-400">
-            {zones.length} illustrative Bhopal zones
-          </p>
-        </div>
-        <SummaryStrip summary={summary} />
-        <div className="mt-5">
-          <ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} />
-        </div>
-        <div className="mt-5">
-          <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
-        </div>
-        <div className="mt-5 grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(17rem,0.8fr)_minmax(0,1.4fr)]">
+          <SummaryStrip summary={summary} />
           <RankedZoneList
             assessments={assessments}
             baselineAssessments={baselineAssessments}
@@ -104,23 +91,16 @@ function App() {
             selectedZoneId={selectedZoneId}
             onSelect={setSelectedZoneId}
           />
-          {selectedAssessment && (
-            <div className="min-w-0 space-y-4">
-              <div className="grid min-w-0 items-start gap-4 xl:grid-cols-2">
-                <RiskCard assessment={selectedAssessment} scenario={scenario} />
-                <AICopilot
-                  key={selectedAssessment.zone.id}
-                  assessment={selectedAssessment}
-                  scenario={scenario}
-                />
-              </div>
-              <CommunityImpact impacts={selectedGroupImpact} zoneName={selectedAssessment.zone.name} />
-              <ActionPlan rankedZones={topRankedZones} scenario={scenario} />
-              <PersonalPlanner zoneAssessment={selectedAssessment} />
-              <HowWeCalculate />
-            </div>
-          )}
-        </div>
+          {selectedAssessment && <RiskCard assessment={selectedAssessment} scenario={scenario} />}
+        </aside>
+        {selectedAssessment && <aside className="dashboard-inspector glass-panel">
+          <ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} />
+          <AICopilot key={selectedAssessment.zone.id} assessment={selectedAssessment} scenario={scenario} />
+          <CommunityImpact impacts={selectedGroupImpact} zoneName={selectedAssessment.zone.name} />
+          <ActionPlan rankedZones={topRankedZones} scenario={scenario} />
+          <PersonalPlanner zoneAssessment={selectedAssessment} />
+          <HowWeCalculate />
+        </aside>}
       </main>
     </div>
   );

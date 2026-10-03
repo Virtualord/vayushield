@@ -10,7 +10,7 @@ const levels = [
 
 export default function RiskLegend() {
   return (
-    <div aria-label="Risk level legend" className="flex flex-wrap gap-x-4 gap-y-2 rounded-b-2xl border border-t-0 border-slate-800 bg-slate-900/80 px-4 py-3">
+    <div aria-label="Risk level legend" className="risk-legend flex flex-wrap gap-x-4 gap-y-2 px-4 py-3">
       {levels.map(({ level, icon }) => (
         <span key={level} className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-wide text-slate-300 sm:text-xs">
           <Icon name={icon} style={{ color: riskColors[level] }} />
