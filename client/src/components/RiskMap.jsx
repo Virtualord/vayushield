@@ -1,7 +1,9 @@
-import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
+import { CircleMarker, MapContainer, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { markerRadius, riskColors } from '../utils/riskMapPresentation.js';
 import MapSelectionSync from './MapSelectionSync.jsx';
+import RiskLegend from './RiskLegend.jsx';
+import TileFailureNotice from './TileFailureNotice.jsx';
 
 const BHOPAL_CENTER = [23.2599, 77.4126];
 export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
@@ -11,8 +13,12 @@ export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
     : [BHOPAL_CENTER];
 
   return (
-    <section aria-label="Environmental risk map" className="risk-map overflow-hidden rounded-2xl border border-slate-800">
-      <MapContainer
+    <div>
+      <section
+        aria-label="Environmental risk map"
+        className="risk-map relative overflow-hidden rounded-t-2xl border border-slate-800 border-b-0"
+      >
+        <MapContainer
         center={BHOPAL_CENTER}
         zoom={12}
         bounds={bounds}
@@ -21,10 +27,7 @@ export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
         className="h-72 w-full sm:h-96"
       >
         <MapSelectionSync assessments={assessments} selectedZoneId={selectedZoneId} />
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <TileFailureNotice />
         {assessments.map(({ zone, level }) => (
           <CircleMarker
             key={zone.id}
@@ -43,7 +46,9 @@ export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
             </Tooltip>
           </CircleMarker>
         ))}
-      </MapContainer>
-    </section>
+        </MapContainer>
+      </section>
+      <RiskLegend />
+    </div>
   );
 }
