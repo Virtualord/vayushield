@@ -6,9 +6,13 @@ import { announceDemoMode } from '../utils/demoMode.js';
 import { getScenarioPresetId } from '../utils/scenarioPreset.js';
 import LoadingSkeleton from './LoadingSkeleton.jsx';
 
-export default function ActionPlan({ rankedZones, scenario }) {
-  const [language, setLanguage] = useState('en');
-  const [audience, setAudience] = useState('authority');
+export default function ActionPlan({ rankedZones, scenario, language: languageProp, onLanguageChange, audience: audienceProp, onAudienceChange }) {
+  const [localLanguage, setLocalLanguage] = useState('en');
+  const [localAudience, setLocalAudience] = useState('authority');
+  const language = languageProp ?? localLanguage;
+  const audience = audienceProp ?? localAudience;
+  const setLanguage = onLanguageChange ?? setLocalLanguage;
+  const setAudience = onAudienceChange ?? setLocalAudience;
   const [plan, setPlan] = useState(null);
   const [source, setSource] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +23,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
     setPlan(null);
     setSource('');
     setCopyStatus('');
-  }, [rankedZones, scenario.windSpeed, scenario.traffic, scenario.industry]);
+  }, [rankedZones, scenario.windSpeed, scenario.traffic, scenario.industry, language, audience]);
 
   async function generatePlan() {
     setLoading(true);
@@ -47,7 +51,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
 
   const groups = plan ? [...new Set(plan.priorityActions.map(({ group }) => group))] : [];
   return (
-    <section className="component-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
+    <section lang={language} className="component-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Community response</p>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import sampleCalendar from '../data/sampleCalendar.json';
 import { classifyEvent, exposureScore } from '../utils/activityEngine.js';
 import { buildLocalDayPlan, getHabitText } from '../utils/plannerRecommendations.js';
@@ -12,15 +12,21 @@ import Icon from './ui/Icon.jsx';
 
 const levelIcons = { CRITICAL: 'critical', HIGH: 'high', MODERATE: 'moderate', LOW: 'low' };
 
-export default function PersonalPlanner({ zoneAssessment }) {
+export default function PersonalPlanner({ zoneAssessment, language: languageProp, onLanguageChange }) {
   const [events, setEvents] = useState([]);
   const [profile, setProfile] = useState({ hasPurifier: false, windowsOpen: false, sensitiveGroup: false });
-  const [language, setLanguage] = useState('en');
+  const [localLanguage, setLocalLanguage] = useState('en');
+  const language = languageProp ?? localLanguage;
+  const setLanguage = onLanguageChange ?? setLocalLanguage;
   const [generatedPlan, setGeneratedPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [icsText, setIcsText] = useState('');
   const [icsError, setIcsError] = useState('');
+
+  useEffect(() => {
+    setGeneratedPlan(null);
+  }, [language]);
 
   const classifiedEvents = useMemo(() => events.map((event) => {
     const classification = classifyEvent(event);
@@ -100,7 +106,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
 
   const tipsByEvent = new Map((plan?.dayPlan ?? []).map(({ eventId, tipIds }) => [eventId, tipIds]));
   return (
-    <section aria-label="Personal day planner" className="component-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
+    <section aria-label="Personal day planner" lang={language} className="component-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Personal planner</p>

@@ -29,10 +29,10 @@ export default function RankedZoneList({ assessments, baselineAssessments = asse
                     : 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
                 }`}
               >
-                <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-slate-800 text-xs font-semibold tabular-nums text-slate-400">
+                <span className="zone-rank grid size-7 shrink-0 place-items-center rounded-lg bg-slate-800 text-xs font-semibold tabular-nums text-slate-400">
                   {index + 1}
                 </span>
-                <span className="min-w-0 flex-1">
+                <span className="zone-info min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium text-slate-100">
                     {zone.name}
                   </span>
@@ -40,7 +40,7 @@ export default function RankedZoneList({ assessments, baselineAssessments = asse
                     {zone.type}
                   </span>
                 </span>
-                <span className="shrink-0 text-right">
+                <span className="zone-score shrink-0 text-right">
                   <span className="block text-sm font-semibold tabular-nums text-white">
                     {baselineById.get(zone.id) !== score ? <><span className="text-slate-400">{baselineById.get(zone.id)} → </span>{score}</> : score}
                   </span>

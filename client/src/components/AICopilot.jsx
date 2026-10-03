@@ -8,12 +8,16 @@ import { getScenarioPresetId } from '../utils/scenarioPreset.js';
 import LoadingSkeleton from './LoadingSkeleton.jsx';
 import Icon from './ui/Icon.jsx';
 
-export default function AICopilot({ assessment, scenario }) {
+export default function AICopilot({ assessment, scenario, language: languageProp, onLanguageChange, audience: audienceProp, onAudienceChange }) {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState('en');
-  const [audience, setAudience] = useState('authority');
+  const [localLanguage, setLocalLanguage] = useState('en');
+  const [localAudience, setLocalAudience] = useState('authority');
+  const language = languageProp ?? localLanguage;
+  const audience = audienceProp ?? localAudience;
+  const setLanguage = onLanguageChange ?? setLocalLanguage;
+  const setAudience = onAudienceChange ?? setLocalAudience;
   const [source, setSource] = useState('');
   const [copyStatus, setCopyStatus] = useState('');
   const labels = copilotLabels[language];
@@ -23,6 +27,12 @@ export default function AICopilot({ assessment, scenario }) {
     setSource('');
     setCopyStatus('');
   }, [scenario.windSpeed, scenario.traffic, scenario.industry]);
+
+  useEffect(() => {
+    setResult(null);
+    setSource('');
+    setCopyStatus('');
+  }, [language, audience]);
 
   async function explainRisk() {
     setIsLoading(true);
@@ -50,7 +60,7 @@ export default function AICopilot({ assessment, scenario }) {
   }
 
   return (
-    <section className="component-panel ai-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
+    <section lang={language} className="component-panel ai-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
       <div>
         <p className="ai-source-label">
           <Icon name="sparkle" size={14} />Gemini

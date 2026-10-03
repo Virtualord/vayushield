@@ -18,7 +18,7 @@ export default function CommunityImpact({ impacts, zoneName }) {
         <h3 className="mt-1 text-lg font-semibold text-white">{zoneName}</h3>
         <p className="mt-1 text-xs text-slate-400">Heuristic sensitivity applied to the prototype Environmental Risk Score.</p>
       </div>
-      <ul className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+      <ul className="mt-4 grid gap-2 sm:grid-cols-2">
         {impacts.map(({ group, score, level, multiplier }) => (
           <li key={group} className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
             <p className="text-xs font-medium text-slate-300"><Icon name={groupIcons[group]} className="mr-2 inline text-[var(--accent)]" />{group}</p>

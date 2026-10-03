@@ -27,6 +27,7 @@ export default function RiskMap({ assessments, baselineAssessments = assessments
         bounds={bounds}
         boundsOptions={{ padding: [28, 28] }}
         scrollWheelZoom={false}
+        fadeAnimation={false}
         zoomControl={false}
         className="h-full w-full"
       >

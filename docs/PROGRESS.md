@@ -79,3 +79,14 @@
 - Readiness results: Firefox screenshots at 390px, 768px, and 1280px were inspected with no horizontal overflow; page-load capture output had no errors (interactive DevTools console was not separately instrumented); risk text and icons retain meaning without color; secret scans and illustrative-data label verified. The no-key/no-network server matrix remains covered by the M8 test.
 - Commits: `4800dbf` responsive layout; `beb082d` keyboard/ARIA/contrast; `07d2d12` loading/empty/meta; final cleanup commit (see `git log`).
 - Next milestone: await the next approved product milestone.
+
+## M10b: Apple-inspired glass design pass
+
+- Added an offline-first glass design system with system/light/dark theme selection, reduced-transparency and increased-contrast fallbacks, hand-written SVG icons, reusable glass primitives, and responsive map-first panels with a draggable mobile sheet.
+- Restyled the summary metrics, AQI and score rings, ranked zones, simulator, Gemini copilot, community impact, action plan, planner, legend, loading states, and Demo Mode/illustrative badges. Risk remains text + icon + color; input, score, and AI explanation remain visually distinct.
+- Tightened map-facing panel opacity after inspecting captures over OSM tiles, disabled tile fade animation, and applied theme-aware scrollbar styling. Hindi line height, visible focus, keyboard controls, reduced motion, and system theme fallback were reviewed.
+- No dependencies added. No server, API, risk engine, activity engine, or data changes.
+- Checks: `npm run lint`, `npm test` (92 tests), and `npm run build` pass. Firefox headless captures were taken at 390px, 768px, and 1280px in light and dark themes; files are `/tmp/vayu-{light,dark}-{390,768,1280}-final.png`.
+- Commits: `41f4e42` design spec; `8f29a35` theme tokens; `aefb039` glass primitives; `04f8c60` icons and risk badges; `cec501e` map-first layout; `a424a04` summary widgets; `59fe9b4` simulator/copilot/planner; `10c68a3` mobile sheet; `834322a` motion; final accessibility commit (see `git log`).
+- Known issues: the project retains pre-existing unstaged dependency manifest changes. Screenshots were inspected in Firefox headless; no interactive browser console session was available.
+- Next milestone: await the next approved product milestone.

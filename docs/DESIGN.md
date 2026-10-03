@@ -25,7 +25,7 @@ Use CSS custom properties for colors and surfaces, with `light`, `dark`, and `sy
 | High | `#FF9F0A` | `#FF9500` |
 | Critical | `#FF453A` | `#FF3B30` |
 
-Dark glass uses a white tint near 8% opacity; light glass uses a white tint near 62%, with a faint dark outline. Standard panels use a 24px radius, cards 20px, controls 12px, and pills full rounding. Typography uses the system stack `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, "Segoe UI", Roboto, sans-serif`, with a 34/40 bold page title, 22/28 section titles, 17/22 headlines, 15/22 body, 12/16 footnotes, and tabular numerals for figures.
+The reference glass treatment specifies 8% white tint in dark mode and 62% in light mode. Map-facing text panels, including both sidebars and the mobile sheet, use stronger fills (93% dark and 90% light) because OSM tiles can vary beneath the text. Smaller child cards use a subtle tint and no nested blur. Reduced transparency and increased contrast use opaque fills. Standard panels use a 24px radius, cards 20px, controls 12px, and pills full rounding. Typography uses the system stack `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, "Segoe UI", Roboto, sans-serif`, with a 34/40 bold page title, 22/28 section titles, 17/22 headlines, 15/22 body, 12/16 footnotes, and tabular numerals for figures.
 
 ## Glass and accessibility rules
 
