@@ -1,8 +1,8 @@
 export const riskColors = {
-  CRITICAL: '#fb7185',
-  HIGH: '#fb923c',
-  MODERATE: '#fbbf24',
-  LOW: '#34d399',
+  CRITICAL: 'var(--risk-critical)',
+  HIGH: 'var(--risk-high)',
+  MODERATE: 'var(--risk-moderate)',
+  LOW: 'var(--risk-low)',
 };
 
 export function markerRadius(population, maxPopulation) {

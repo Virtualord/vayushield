@@ -9,7 +9,7 @@ describe('community impact view', () => {
     const markup = renderToStaticMarkup(<CommunityImpact impacts={impacts} zoneName="Test zone" />);
     for (const group of groups) expect(markup).toContain(group);
     expect(markup).toContain('Heuristic sensitivity');
-    expect(markup).toContain('style="color:#fb923c"');
-    expect(markup).toContain('▲');
+    expect(markup).toContain('style="color:var(--risk-high)"');
+    expect(markup).toContain('data-icon="high"');
   });
 });

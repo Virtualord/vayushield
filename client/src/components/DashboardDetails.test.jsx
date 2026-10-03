@@ -26,7 +26,7 @@ describe('dashboard detail components', () => {
   it('renders the risk badge with icon and text', () => {
     const markup = renderToStaticMarkup(<RiskBadge level="HIGH" />);
 
-    expect(markup).toContain('▲');
+    expect(markup).toContain('data-icon="high"');
     expect(markup).toContain('HIGH');
   });
 

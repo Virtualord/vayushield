@@ -1,13 +1,14 @@
 import { riskColors } from '../utils/riskMapPresentation.js';
+import Icon from './ui/Icon.jsx';
 
 const groupIcons = {
-  Schools: '▣',
-  Healthcare: '✚',
-  Elderly: '◉',
-  'Outdoor workers': '☀',
-  'Industrial workers': '⚙',
+  Schools: 'school',
+  Healthcare: 'hospital',
+  Elderly: 'person',
+  'Outdoor workers': 'sun',
+  'Industrial workers': 'industry',
 };
-const levelIcons = { CRITICAL: '⚠', HIGH: '▲', MODERATE: '◆', LOW: '✓' };
+const levelIcons = { CRITICAL: 'critical', HIGH: 'high', MODERATE: 'moderate', LOW: 'low' };
 
 export default function CommunityImpact({ impacts, zoneName }) {
   return (
@@ -20,10 +21,10 @@ export default function CommunityImpact({ impacts, zoneName }) {
       <ul className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
         {impacts.map(({ group, score, level, multiplier }) => (
           <li key={group} className="rounded-xl border border-slate-800 bg-slate-950/60 p-3">
-            <p className="text-xs font-medium text-slate-300"><span aria-hidden="true" className="mr-2 text-cyan-300">{groupIcons[group]}</span>{group}</p>
+            <p className="text-xs font-medium text-slate-300"><Icon name={groupIcons[group]} className="mr-2 inline text-[var(--accent)]" />{group}</p>
             <p className="mt-3 text-xl font-semibold tabular-nums text-white">{score}<span className="ml-1 text-[10px] font-normal text-slate-400">/100</span></p>
             <p className="mt-1 text-[10px] text-slate-400">Heuristic ×{multiplier.toFixed(2)}</p>
-            <p className="mt-2 text-[10px] font-bold" style={{ color: riskColors[level] }}><span aria-hidden="true">{levelIcons[level]} </span>{level}</p>
+            <p className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold text-[var(--label)]"><Icon name={levelIcons[level]} size={14} style={{ color: riskColors[level] }} />{level}</p>
           </li>
         ))}
       </ul>

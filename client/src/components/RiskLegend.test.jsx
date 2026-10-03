@@ -9,11 +9,11 @@ describe('risk map legend', () => {
     expect(markup).toContain('HIGH');
     expect(markup).toContain('MODERATE');
     expect(markup).toContain('LOW');
-    expect(markup).toContain('⚠');
-    expect(markup).toContain('▲');
-    expect(markup).toContain('◆');
-    expect(markup).toContain('✓');
-    expect(markup).toContain('#fb7185');
-    expect(markup).toContain('#34d399');
+    expect(markup).toContain('data-icon="critical"');
+    expect(markup).toContain('data-icon="high"');
+    expect(markup).toContain('data-icon="moderate"');
+    expect(markup).toContain('data-icon="low"');
+    expect(markup).toContain('var(--risk-critical)');
+    expect(markup).toContain('var(--risk-low)');
   });
 });

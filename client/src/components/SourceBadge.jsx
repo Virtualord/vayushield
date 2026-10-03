@@ -11,12 +11,13 @@ export default function SourceBadge({ source, language }) {
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-[10px] font-semibold ${
         isGemini
-          ? 'border-violet-300/25 bg-violet-300/10 text-violet-200'
-          : 'border-slate-600 bg-slate-800 text-slate-300'
+          ? 'border-[color-mix(in_srgb,var(--accent)_35%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--glass-strong))] text-[var(--label)]'
+          : 'border-[var(--glass-border)] bg-[var(--glass-child)] text-[var(--secondary-label)]'
       }`}
     >
-      <span aria-hidden="true">{isGemini ? '✦' : '◌'}</span>
+      <Icon name={isGemini ? 'sparkle' : 'person'} size={13} />
       {label}
     </span>
   );
 }
+import Icon from './ui/Icon.jsx';

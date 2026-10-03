@@ -8,8 +8,9 @@ import SourceBadge from './SourceBadge.jsx';
 import { parseIcsCalendar } from '../utils/icsParser.js';
 import { announceDemoMode } from '../utils/demoMode.js';
 import LoadingSkeleton from './LoadingSkeleton.jsx';
+import Icon from './ui/Icon.jsx';
 
-const levelIcons = { CRITICAL: '⚠', HIGH: '▲', MODERATE: '◆', LOW: '✓' };
+const levelIcons = { CRITICAL: 'critical', HIGH: 'high', MODERATE: 'moderate', LOW: 'low' };
 
 export default function PersonalPlanner({ zoneAssessment }) {
   const [events, setEvents] = useState([]);
@@ -148,8 +149,8 @@ export default function PersonalPlanner({ zoneAssessment }) {
                     </ul>
                   )}
                 </div>
-                <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-slate-700 px-2.5 py-1 text-[11px] font-semibold tabular-nums" style={{ color: riskColors[event.level] }} aria-label={`Exposure ${event.level}, score ${event.exposure}`}>
-                  <span aria-hidden="true">{levelIcons[event.level]}</span>{event.level} · {event.exposure}
+                <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-slate-700 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-[var(--label)]" aria-label={`Exposure ${event.level}, score ${event.exposure}`}>
+                  <Icon name={levelIcons[event.level]} size={14} style={{ color: riskColors[event.level] }} />{event.level} · {event.exposure}
                 </span>
               </li>
             ))}
