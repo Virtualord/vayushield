@@ -11,6 +11,7 @@
     "test": "npm run test -w client && npm run test -w server",
     "lint": "eslint .",
     "build": "npm run build -w client",
+    "demo:cache": "node scripts/generate-demo-cache.js",
     "start": "npm run start -w server"
   },
   "devDependencies": {
