@@ -9,8 +9,10 @@ vi.mock('@google/genai', () => ({
   }),
 }));
 
-import { GEMINI_TIMEOUT_MS, generateExplanation } from './gemini.js';
+import { GEMINI_TIMEOUT_MS, generateActionPlan, generateDayPlan, generateExplanation } from './gemini.js';
 import { explainResponseSchema, isValidExplainResult } from './explainSchema.js';
+import { planResponseSchema } from './planSchema.js';
+import { planDayResponseSchema } from './dayPlanSchema.js';
 
 const validResult = {
   summary: 'Summary',
@@ -52,5 +54,23 @@ describe('Gemini structured explanation client', () => {
   it('rejects malformed JSON output', async () => {
     generateContent.mockResolvedValue({ text: 'not json' });
     await expect(generateExplanation('Prompt')).rejects.toThrow('invalid JSON');
+  });
+
+  it('generates a schema-validated plan-day response using approved habit IDs', async () => {
+    const events = [{ eventId: 'e1', setting: 'indoor', exertion: 'low', durationMin: 30, startTime: '2026-10-03T09:00:00Z', exposure: 12, level: 'LOW' }];
+    const candidates = { e1: [{ id: 'window-closed-guidance' }] };
+    const result = { summary: 'Plan.', dayPlan: [{ eventId: 'e1', tipIds: ['window-closed-guidance'] }], caveat: 'Heuristic.' };
+    generateContent.mockResolvedValue({ text: JSON.stringify(result) });
+
+    await expect(generateDayPlan('Prompt', events, candidates)).resolves.toEqual(result);
+    expect(generateContent.mock.calls[0][0].config.responseSchema).toBe(planDayResponseSchema);
+  });
+
+  it('generates the existing action plan with its response schema', async () => {
+    const actionPlan = { priorityActions: [{ group: 'Schools', zoneId: 'z1', action: 'Share notices.' }], monitoringPlan: ['Review notices.'], advisoryMessage: 'General only.', caveat: 'Illustrative.' };
+    generateContent.mockResolvedValue({ text: JSON.stringify(actionPlan) });
+    const rankedZones = [{ zone: { id: 'z1' } }];
+    await expect(generateActionPlan('Prompt', rankedZones)).resolves.toEqual(actionPlan);
+    expect(generateContent.mock.calls[0][0].config.responseSchema).toBe(planResponseSchema);
   });
 });
