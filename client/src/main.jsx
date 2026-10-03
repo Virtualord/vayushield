@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
+import AICopilot from './components/AICopilot.jsx';
 import HowWeCalculate from './components/HowWeCalculate.jsx';
 import RankedZoneList from './components/RankedZoneList.jsx';
 import RiskMap from './components/RiskMap.jsx';
@@ -55,7 +56,14 @@ function App() {
           />
           {selectedAssessment && (
             <div className="space-y-4">
-              <RiskCard assessment={selectedAssessment} scenario={scenario} />
+              <div className="grid items-start gap-4 xl:grid-cols-2">
+                <RiskCard assessment={selectedAssessment} scenario={scenario} />
+                <AICopilot
+                  key={selectedAssessment.zone.id}
+                  assessment={selectedAssessment}
+                  scenario={scenario}
+                />
+              </div>
               <HowWeCalculate />
             </div>
           )}

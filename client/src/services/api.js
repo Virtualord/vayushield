@@ -1,0 +1,31 @@
+export async function analyzeZone(assessment, scenario, language, audience) {
+  let response;
+  try {
+    response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ assessment, scenario, language, audience }),
+    });
+  } catch {
+    throw new Error('Could not reach the analysis service. Try again.');
+  }
+
+  if (!response.ok) throw new Error('The analysis request could not be completed.');
+
+  let payload;
+  try {
+    payload = await response.json();
+  } catch {
+    throw new Error('The analysis service returned an unreadable response.');
+  }
+
+  if (
+    !payload ||
+    !payload.result ||
+    !['gemini', 'offline-template'].includes(payload.source)
+  ) {
+    throw new Error('The analysis service returned an invalid response.');
+  }
+
+  return payload;
+}
