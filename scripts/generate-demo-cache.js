@@ -57,9 +57,9 @@ export async function generateDemoCache() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   generateDemoCache()
-    .then((entryCount) => console.log(`Wrote ${entryCount} demo cache entries to server/data/demoCache.json.`))
+    .then((entryCount) => process.stdout.write(`Wrote ${entryCount} demo cache entries to server/data/demoCache.json.\n`))
     .catch(() => {
-      console.error('Demo cache generation failed. Check that GEMINI_API_KEY is set and Gemini is reachable.');
+      process.stderr.write('Demo cache generation failed. Check that GEMINI_API_KEY is set and Gemini is reachable.\n');
       process.exitCode = 1;
     });
 }

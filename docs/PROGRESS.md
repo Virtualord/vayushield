@@ -69,3 +69,13 @@
 - Checks: `npm run lint`, `npm test` (88 tests), and `npm run build` pass. Firefox headless crashed during the visual readiness check, so browser console and 390px layout checks remain unverified.
 - Commits: `7ad0d45` demo banner; `a7e11ea` cache generator; `3057ba5` cached response fallback; final no-network test commit (see `git log`).
 - Next milestone: await the next approved product milestone.
+
+## M9: polish
+
+- Tightened responsive dashboard grids and spacing for mobile through desktop widths.
+- Added global visible keyboard focus, explicit map zoom control names, slider/toggle/list-row labels, and improved muted text contrast while preserving text-and-icon risk levels.
+- Added accessible loading skeletons, empty states, page description, title, and SVG favicon. Existing request/import errors remain announced as alerts.
+- Removed JavaScript console output from application and manual generator paths. ESLint reports no warnings or dead imports.
+- Readiness results: Firefox screenshots at 390px, 768px, and 1280px were inspected with no horizontal overflow; page-load capture output had no errors (interactive DevTools console was not separately instrumented); risk text and icons retain meaning without color; secret scans and illustrative-data label verified. The no-key/no-network server matrix remains covered by the M8 test.
+- Commits: `4800dbf` responsive layout; `beb082d` keyboard/ARIA/contrast; `07d2d12` loading/empty/meta; final cleanup commit (see `git log`).
+- Next milestone: await the next approved product milestone.

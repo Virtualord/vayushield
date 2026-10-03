@@ -18,6 +18,4 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(port, () => {
-  console.log(`VayuShield server listening on port ${port}`);
-});
+app.listen(port);
