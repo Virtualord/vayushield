@@ -13,6 +13,7 @@ import CommunityImpact from './components/CommunityImpact.jsx';
 import ActionPlan from './components/ActionPlan.jsx';
 import PersonalPlanner from './components/PersonalPlanner.jsx';
 import DemoModeBanner from './components/DemoModeBanner.jsx';
+import Sheet from './components/ui/Sheet.jsx';
 import presets from './data/scenarioPresets.json';
 import { announceDemoMode, demoModeEventName } from './utils/demoMode.js';
 import { checkApiHealth } from './services/healthCheck.js';
@@ -78,7 +79,8 @@ function App() {
       <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
       <DashboardHeader theme={theme} onThemeChange={setTheme} scenario={scenario} onScenarioChange={setScenario} presets={presets} />
       <main className="map-dashboard">
-        <aside className="dashboard-sidebar glass-panel">
+        <Sheet>{(activeTab) => <>
+        <aside className="dashboard-sidebar sheet-pane" data-sheet-tab="zones" hidden={activeTab !== 'zones'}>
           <div className="sidebar-heading">
             <div><p className="eyebrow">Prototype dashboard</p><h2>Neighborhood overview</h2></div>
             <span>{zones.length} zones</span>
@@ -93,14 +95,17 @@ function App() {
           />
           {selectedAssessment && <RiskCard assessment={selectedAssessment} scenario={scenario} />}
         </aside>
-        {selectedAssessment && <aside className="dashboard-inspector glass-panel">
-          <ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} />
-          <AICopilot key={selectedAssessment.zone.id} assessment={selectedAssessment} scenario={scenario} />
+        <div className="dashboard-inspector glass-panel">
+          <section className="sheet-pane" data-sheet-tab="simulate" hidden={activeTab !== 'simulate'}><ScenarioSimulator scenario={scenario} onScenarioChange={setScenario} zones={zones} /></section>
+          {selectedAssessment && <section className="sheet-pane" data-sheet-tab="ai" hidden={activeTab !== 'ai'}><AICopilot key={selectedAssessment.zone.id} assessment={selectedAssessment} scenario={scenario} /></section>}
+          {selectedAssessment && <section className="sheet-pane" data-sheet-tab="plan" hidden={activeTab !== 'plan'}>
           <CommunityImpact impacts={selectedGroupImpact} zoneName={selectedAssessment.zone.name} />
           <ActionPlan rankedZones={topRankedZones} scenario={scenario} />
           <PersonalPlanner zoneAssessment={selectedAssessment} />
           <HowWeCalculate />
-        </aside>}
+          </section>}
+        </div>
+        </>}</Sheet>
       </main>
     </div>
   );
