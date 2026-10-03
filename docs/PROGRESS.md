@@ -8,6 +8,7 @@
 - Gemini does not calculate or modify scores. The client sends only the current engine assessment, scenario, language, and audience to the server; credentials remain server-side.
 - M6: interactive what-if controls and presets, instant engine recomputation, baseline rings and scenario fills on the map, ranked score comparisons, a risk-level Changes table, and scenario-specific AI explanations.
 - M7: documented heuristic community-group score impacts, selected-zone community impact view, validated/rate-limited `POST /api/plan`, deterministic offline plan fallback, and action plan UI with source and advisory copy.
+- M8: curated bilingual unreviewed habit library and sample day, browser-only activity classification, deterministic exposure scoring, title-free validated/rate-limited `POST /api/plan-day`, profile-based habit matching with offline templates, Personal Planner UI, and local `.ics` paste/upload.
 
 ## M4 commits
 
@@ -36,6 +37,15 @@
 - `0974185` feat(server): add action plan endpoint with schema and fallback
 - `feat(ui): add action plan panel with advisory copy` (see `git log` for its hash)
 
+## M8 commits
+
+- `1c02b73` feat(data): add curated habit library and sample calendar
+- `4596de0` feat(engine): add activity classification and exposure scoring with tests
+- `ab55b4f` feat(server): add plan-day endpoint with habit validation and fallback
+- `db9627c` feat(ui): add personal planner panel with profile toggles
+- `a703137` feat(ui): add ics import for calendar events
+- `docs: document planner heuristics and privacy approach` (this final commit; see `git log` for its hash)
+
 ## Next milestone
 
 - Await the next approved product milestone.
@@ -48,3 +58,4 @@
 - Endpoint handler behavior is tested without opening a local network listener because the test sandbox denies socket binding.
 - Baseline is zone-specific wind with normal traffic and industry; scenario inputs remain illustrative and are not forecasts.
 - Community sensitivity multipliers are documented heuristics, not health impact estimates. Action plans consume only the three current ranked engine assessments and the active scenario; offline mode includes scenario context deterministically.
+- Planner activity factors and keyword classification are heuristics, not forecasts or measured exposure. `.ics` recurrence rules are not expanded; event titles remain local and are excluded from plan-day requests. Habit library entries remain unreviewed pending owner verification.
