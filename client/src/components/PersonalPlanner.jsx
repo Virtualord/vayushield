@@ -5,6 +5,7 @@ import { buildLocalDayPlan, getHabitText } from '../utils/plannerRecommendations
 import { riskColors } from '../utils/riskMapPresentation.js';
 import { requestDayPlan } from '../services/planDayApi.js';
 import SourceBadge from './SourceBadge.jsx';
+import { parseIcsCalendar } from '../utils/icsParser.js';
 
 const levelIcons = { CRITICAL: '⚠', HIGH: '▲', MODERATE: '◆', LOW: '✓' };
 
@@ -15,6 +16,8 @@ export default function PersonalPlanner({ zoneAssessment }) {
   const [generatedPlan, setGeneratedPlan] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [icsText, setIcsText] = useState('');
+  const [icsError, setIcsError] = useState('');
 
   const classifiedEvents = useMemo(() => events.map((event) => {
     const classification = classifyEvent(event);
@@ -63,6 +66,28 @@ export default function PersonalPlanner({ zoneAssessment }) {
     setMessage('');
   }
 
+  function importCalendar(text) {
+    try {
+      setEvents(parseIcsCalendar(text));
+      setGeneratedPlan(null);
+      setMessage('');
+      setIcsError('');
+    } catch (error) {
+      setIcsError(error.message);
+    }
+  }
+
+  async function importCalendarFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      importCalendar(await file.text());
+    } catch {
+      setIcsError('Could not read that calendar file.');
+    }
+    event.target.value = '';
+  }
+
   function changeLanguage(value) {
     setLanguage(value);
     setGeneratedPlan(null);
@@ -92,6 +117,18 @@ export default function PersonalPlanner({ zoneAssessment }) {
           </select>
         </label>
       </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <label className="text-xs text-slate-400">Paste calendar (.ics)
+          <textarea aria-label="Paste calendar ICS" value={icsText} onChange={(event) => setIcsText(event.target.value)} rows={2} className="mt-1.5 block w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-200" placeholder="BEGIN:VCALENDAR …" />
+        </label>
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" onClick={() => importCalendar(icsText)} className="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-cyan-300/40">Import pasted .ics</button>
+          <label className="cursor-pointer rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-cyan-300/40">
+            Upload .ics<input type="file" accept=".ics,text/calendar" onChange={importCalendarFile} className="sr-only" />
+          </label>
+        </div>
+      </div>
+      {icsError && <p role="alert" className="mt-2 text-xs text-rose-300">{icsError}</p>}
       {classifiedEvents.length > 0 ? (
         <>
           <ol className="mt-4 space-y-2">

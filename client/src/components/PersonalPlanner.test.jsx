@@ -9,6 +9,8 @@ describe('personal day planner', () => {
     expect(markup).toContain('Windows open');
     expect(markup).toContain('Sensitive group profile');
     expect(markup).toContain('Load sample day');
+    expect(markup).toContain('Import pasted .ics');
+    expect(markup).toContain('Upload .ics');
     expect(markup).toContain('General precautions only, not medical advice.');
   });
 });
