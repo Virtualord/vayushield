@@ -50,4 +50,15 @@ export function validateZone(zone) {
   );
 }
 
+export function getActiveZones(mode = import.meta.env.VITE_DEMO_MODE, sourceZones = zones) {
+  if (mode !== 'B') return sourceZones;
+  return sourceZones.slice(0, 3).map((zone, index) => ({
+    ...zone,
+    id: `placeholder-${index + 1}`,
+    name: 'PLACEHOLDER',
+    dataSource: 'illustrative',
+  }));
+}
+
+export const activeZones = getActiveZones();
 export { zones };

@@ -7,7 +7,7 @@ import RankedZoneList from './components/RankedZoneList.jsx';
 import RiskMap from './components/RiskMap.jsx';
 import RiskCard from './components/RiskCard.jsx';
 import SummaryStrip from './components/SummaryStrip.jsx';
-import { zones } from './data/zones.js';
+import { activeZones as zones } from './data/zones.js';
 import { rankZones } from './utils/riskEngine.js';
 import { buildDashboardSummary } from './utils/dashboardSummary.js';
 import './style.css';

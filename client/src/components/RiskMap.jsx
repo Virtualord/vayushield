@@ -1,6 +1,7 @@
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { markerRadius, riskColors } from '../utils/riskMapPresentation.js';
+import MapSelectionSync from './MapSelectionSync.jsx';
 
 const BHOPAL_CENTER = [23.2599, 77.4126];
 export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
@@ -19,6 +20,7 @@ export default function RiskMap({ assessments, selectedZoneId, onSelect }) {
         scrollWheelZoom={false}
         className="h-72 w-full sm:h-96"
       >
+        <MapSelectionSync assessments={assessments} selectedZoneId={selectedZoneId} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
