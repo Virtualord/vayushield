@@ -10,4 +10,10 @@ describe('action plan panel', () => {
     expect(markup).toContain('Plan audience');
     expect(markup).not.toContain('Priority actions');
   });
+
+  it('explains why planning is unavailable when fewer than three zones are ranked', () => {
+    const markup = renderToStaticMarkup(<ActionPlan rankedZones={[]} scenario={{ windSpeed: null, traffic: 'normal', industry: 'normal' }} />);
+    expect(markup).toContain('A response plan needs three ranked zones.');
+    expect(markup).toContain('disabled=""');
+  });
 });

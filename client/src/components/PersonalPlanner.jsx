@@ -7,6 +7,7 @@ import { requestDayPlan } from '../services/planDayApi.js';
 import SourceBadge from './SourceBadge.jsx';
 import { parseIcsCalendar } from '../utils/icsParser.js';
 import { announceDemoMode } from '../utils/demoMode.js';
+import LoadingSkeleton from './LoadingSkeleton.jsx';
 
 const levelIcons = { CRITICAL: '⚠', HIGH: '▲', MODERATE: '◆', LOW: '✓' };
 
@@ -156,6 +157,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
           <button type="button" onClick={generatePlan} disabled={loading} className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300 disabled:cursor-wait disabled:opacity-60">
             {loading ? 'Preparing day plan…' : 'Generate day plan'}
           </button>
+          {loading && <LoadingSkeleton label="Preparing day plan" />}
           {message && <p role="status" className="mt-2 text-xs text-slate-400">{message}</p>}
         </>
       ) : <p className="mt-4 rounded-xl border border-dashed border-slate-700 p-4 text-center text-sm text-slate-400">Load a sample day or import calendar events.</p>}

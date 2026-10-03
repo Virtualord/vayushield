@@ -12,6 +12,7 @@ export default function RankedZoneList({ assessments, baselineAssessments = asse
         <span className="text-xs tabular-nums text-slate-400">{assessments.length} areas</span>
       </div>
       <ol className="space-y-2">
+        {assessments.length === 0 && <li className="rounded-xl border border-dashed border-slate-700 p-4 text-sm text-slate-300">No zones are available for this view.</li>}
         {assessments.map(({ zone, score, level }, index) => {
           const isSelected = zone.id === selectedZoneId;
 

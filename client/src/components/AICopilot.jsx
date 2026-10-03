@@ -5,6 +5,7 @@ import SourceBadge from './SourceBadge.jsx';
 import { copyToClipboard } from '../utils/copyToClipboard.js';
 import { announceDemoMode } from '../utils/demoMode.js';
 import { getScenarioPresetId } from '../utils/scenarioPreset.js';
+import LoadingSkeleton from './LoadingSkeleton.jsx';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
@@ -85,6 +86,7 @@ export default function AICopilot({ assessment, scenario }) {
       >
         {isLoading ? labels.loading : labels.explain}
       </button>
+      {isLoading && <LoadingSkeleton label={labels.loading} />}
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {result && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">

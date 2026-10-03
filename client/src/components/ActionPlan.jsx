@@ -4,6 +4,7 @@ import { copyToClipboard } from '../utils/copyToClipboard.js';
 import SourceBadge from './SourceBadge.jsx';
 import { announceDemoMode } from '../utils/demoMode.js';
 import { getScenarioPresetId } from '../utils/scenarioPreset.js';
+import LoadingSkeleton from './LoadingSkeleton.jsx';
 
 export default function ActionPlan({ rankedZones, scenario }) {
   const [language, setLanguage] = useState('en');
@@ -69,6 +70,8 @@ export default function ActionPlan({ rankedZones, scenario }) {
       <button type="button" onClick={generatePlan} disabled={loading || rankedZones.length !== 3} className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300 disabled:cursor-wait disabled:opacity-60">
         {loading ? 'Generating plan…' : 'Generate response plan'}
       </button>
+      {loading && <LoadingSkeleton label="Generating response plan" />}
+      {rankedZones.length !== 3 && <p role="status" className="mt-3 text-sm text-slate-300">A response plan needs three ranked zones.</p>}
       {error && <p role="alert" className="mt-3 text-sm text-rose-300">{error}</p>}
       {plan && (
         <div className="mt-4 space-y-4 border-t border-slate-800 pt-4">

@@ -12,4 +12,10 @@ describe('ranked zone scenario comparison', () => {
     expect(markup).toContain('Changes');
     expect(markup).toContain('aria-label="Select Example, HIGH risk, score 52"');
   });
+
+  it('shows an empty state when no zones are available', () => {
+    const markup = renderToStaticMarkup(<RankedZoneList assessments={[]} comparisons={[]} selectedZoneId={null} onSelect={() => {}} />);
+    expect(markup).toContain('No zones are available for this view.');
+    expect(markup).toContain('No zone risk levels changed from baseline.');
+  });
 });
