@@ -1,0 +1,9 @@
+[
+  { "id": "school-run", "title": "School run", "startTime": "2026-10-03T07:15:00+05:30", "endTime": "2026-10-03T07:45:00+05:30" },
+  { "id": "office-meeting", "title": "Office meeting", "startTime": "2026-10-03T09:00:00+05:30", "endTime": "2026-10-03T10:00:00+05:30" },
+  { "id": "commute", "title": "Commute", "startTime": "2026-10-03T10:30:00+05:30", "endTime": "2026-10-03T11:00:00+05:30" },
+  { "id": "gym-run", "title": "Gym run", "startTime": "2026-10-03T12:15:00+05:30", "endTime": "2026-10-03T13:00:00+05:30" },
+  { "id": "lunch-outside", "title": "Lunch outside", "startTime": "2026-10-03T13:15:00+05:30", "endTime": "2026-10-03T14:00:00+05:30" },
+  { "id": "cricket-practice", "title": "Cricket practice", "startTime": "2026-10-03T16:30:00+05:30", "endTime": "2026-10-03T17:30:00+05:30" },
+  { "id": "evening-walk", "title": "Evening walk", "startTime": "2026-10-03T18:30:00+05:30", "endTime": "2026-10-03T19:00:00+05:30" }
+]
