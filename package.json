@@ -1,0 +1,21 @@
+{
+  "name": "vayushield",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client \"npm run dev -w server\" \"npm run dev -w client\"",
+    "test": "npm run test -w client",
+    "lint": "eslint .",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "eslint": "^9.35.0",
+    "prettier": "^3.6.2"
+  }
+}
