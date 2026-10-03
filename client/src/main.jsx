@@ -1,10 +1,22 @@
+import { useMemo, useState } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import DashboardHeader from './components/DashboardHeader.jsx';
+import SummaryStrip from './components/SummaryStrip.jsx';
 import { zones } from './data/zones.js';
+import { rankZones } from './utils/riskEngine.js';
+import { buildDashboardSummary } from './utils/dashboardSummary.js';
 import './style.css';
 
 function App() {
+  const [scenario] = useState({
+    windSpeed: null,
+    traffic: 'normal',
+    industry: 'normal',
+  });
+  const assessments = useMemo(() => rankZones(zones, scenario), [scenario]);
+  const summary = useMemo(() => buildDashboardSummary(assessments), [assessments]);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <DashboardHeader />
@@ -22,16 +34,7 @@ function App() {
             {zones.length} illustrative Bhopal zones
           </p>
         </div>
-        <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6">
-          <p className="text-sm leading-6 text-slate-300">
-            VayuShield combines illustrative environmental inputs with a deterministic
-            Environmental Risk Score for each zone.
-          </p>
-          <p className="mt-3 text-xs leading-5 text-slate-500">
-            Prototype scores are separate from the input data and are not official
-            measurements.
-          </p>
-        </section>
+        <SummaryStrip summary={summary} />
       </main>
     </div>
   );
