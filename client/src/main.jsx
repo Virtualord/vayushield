@@ -56,7 +56,7 @@ function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <DemoModeBanner visible={demoMode} />
       <DashboardHeader />
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <main className="mx-auto max-w-7xl min-w-0 px-3 py-5 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -77,7 +77,7 @@ function App() {
         <div className="mt-5">
           <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
         </div>
-        <div className="mt-5 grid items-start gap-4 lg:grid-cols-[minmax(17rem,0.85fr)_minmax(0,1.4fr)]">
+        <div className="mt-5 grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(17rem,0.8fr)_minmax(0,1.4fr)]">
           <RankedZoneList
             assessments={assessments}
             baselineAssessments={baselineAssessments}
@@ -86,8 +86,8 @@ function App() {
             onSelect={setSelectedZoneId}
           />
           {selectedAssessment && (
-            <div className="space-y-4">
-              <div className="grid items-start gap-4 xl:grid-cols-2">
+            <div className="min-w-0 space-y-4">
+              <div className="grid min-w-0 items-start gap-4 xl:grid-cols-2">
                 <RiskCard assessment={selectedAssessment} scenario={scenario} />
                 <AICopilot
                   key={selectedAssessment.zone.id}
