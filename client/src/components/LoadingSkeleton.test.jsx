@@ -7,6 +7,6 @@ describe('loading skeleton', () => {
     const markup = renderToStaticMarkup(<LoadingSkeleton label="Generating explanation" />);
     expect(markup).toContain('role="status" aria-label="Generating explanation"');
     expect(markup).toContain('aria-hidden="true"');
-    expect(markup).toContain('animate-pulse');
+    expect(markup).toContain('skeleton-line');
   });
 });

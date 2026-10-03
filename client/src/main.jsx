@@ -74,7 +74,7 @@ function App() {
   }, [theme]);
 
   return (
-    <div className="app-shell min-h-screen">
+    <div className="app-shell motion-ready min-h-screen">
       <DemoModeBanner visible={demoMode} />
       <RiskMap assessments={assessments} baselineAssessments={baselineAssessments} selectedZoneId={selectedZoneId} onSelect={setSelectedZoneId} />
       <DashboardHeader theme={theme} onThemeChange={setTheme} scenario={scenario} onScenarioChange={setScenario} presets={presets} />

@@ -23,7 +23,7 @@ export default function RankedZoneList({ assessments, baselineAssessments = asse
                 aria-pressed={isSelected}
                 aria-label={`Select ${zone.name}, ${level} risk, score ${score}`}
                 onClick={() => onSelect(zone.id)}
-                className={`flex w-full min-w-0 items-center gap-2 rounded-xl border p-2.5 text-left transition-colors sm:gap-3 sm:p-3 ${
+                className={`ranked-zone-button flex w-full min-w-0 items-center gap-2 rounded-xl border p-2.5 text-left transition-colors sm:gap-3 sm:p-3 ${
                   isSelected
                     ? 'border-cyan-400/50 bg-cyan-400/[0.07]'
                     : 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
