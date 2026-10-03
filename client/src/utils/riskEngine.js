@@ -80,3 +80,23 @@ export function assessZone(zone, scenario) {
     vulnerability: zone.vulnerability,
   };
 }
+
+export function rankZones(zones, scenario) {
+  return zones
+    .map((zone) => assessZone(zone, scenario))
+    .sort((left, right) => right.score - left.score);
+}
+
+export function compareScenarios(zones, baseline, scenario) {
+  return zones.map((zone) => {
+    const before = assessZone(zone, baseline);
+    const after = assessZone(zone, scenario);
+
+    return {
+      before,
+      after,
+      delta: after.score - before.score,
+      levelChanged: before.level !== after.level,
+    };
+  });
+}

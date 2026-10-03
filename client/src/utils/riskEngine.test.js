@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   aqiFromPM25,
   assessZone,
+  compareScenarios,
   effectivePM25,
+  rankZones,
   riskLevel,
 } from './riskEngine.js';
 import { zones } from '../data/zones.js';
@@ -56,5 +58,28 @@ describe('risk scoring', () => {
     expect(riskLevel(30)).toBe('MODERATE');
     expect(riskLevel(50)).toBe('HIGH');
     expect(riskLevel(75)).toBe('CRITICAL');
+  });
+});
+
+describe('zone ranking and scenario comparison', () => {
+  it('ranks zones by descending score', () => {
+    const ranked = rankZones(zones, baseline);
+
+    expect(ranked).toHaveLength(zones.length);
+    expect(ranked.map(({ score }) => score)).toEqual(
+      [...ranked.map(({ score }) => score)].sort((left, right) => right - left),
+    );
+  });
+
+  it('returns before and after assessments with score deltas', () => {
+    const scenario = { ...baseline, traffic: 'high' };
+    const comparisons = compareScenarios(zones.slice(0, 3), baseline, scenario);
+
+    expect(comparisons).toHaveLength(3);
+    for (const { before, after, delta, levelChanged } of comparisons) {
+      expect(delta).toBe(after.score - before.score);
+      expect(levelChanged).toBe(after.level !== before.level);
+      expect(after.score).toBeGreaterThanOrEqual(before.score);
+    }
   });
 });
