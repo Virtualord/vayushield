@@ -100,7 +100,7 @@ export default function PersonalPlanner({ zoneAssessment }) {
 
   const tipsByEvent = new Map((plan?.dayPlan ?? []).map(({ eventId, tipIds }) => [eventId, tipIds]));
   return (
-    <section aria-label="Personal day planner" className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
+    <section aria-label="Personal day planner" className="component-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Personal planner</p>

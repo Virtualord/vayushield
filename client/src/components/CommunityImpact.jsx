@@ -12,7 +12,7 @@ const levelIcons = { CRITICAL: 'critical', HIGH: 'high', MODERATE: 'moderate', L
 
 export default function CommunityImpact({ impacts, zoneName }) {
   return (
-    <section aria-label="Community impact" className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
+    <section aria-label="Community impact" className="component-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Community impact</p>
         <h3 className="mt-1 text-lg font-semibold text-white">{zoneName}</h3>

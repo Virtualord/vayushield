@@ -6,6 +6,7 @@ import { copyToClipboard } from '../utils/copyToClipboard.js';
 import { announceDemoMode } from '../utils/demoMode.js';
 import { getScenarioPresetId } from '../utils/scenarioPreset.js';
 import LoadingSkeleton from './LoadingSkeleton.jsx';
+import Icon from './ui/Icon.jsx';
 
 export default function AICopilot({ assessment, scenario }) {
   const [result, setResult] = useState(null);
@@ -49,8 +50,11 @@ export default function AICopilot({ assessment, scenario }) {
   }
 
   return (
-    <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
+    <section className="component-panel ai-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
       <div>
+        <p className="ai-source-label">
+          <Icon name="sparkle" size={14} />Gemini
+        </p>
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
           {labels.heading}
         </p>

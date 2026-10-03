@@ -2,7 +2,7 @@ import { WEIGHTS } from '../utils/riskEngine.js';
 
 export default function HowWeCalculate() {
   return (
-    <details className="group rounded-2xl border border-slate-800 bg-slate-900/70">
+    <details className="component-panel group rounded-2xl border border-slate-800 bg-slate-900/70">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-sm font-semibold text-slate-200 sm:p-5">
         <span>How we calculate this</span>
         <span

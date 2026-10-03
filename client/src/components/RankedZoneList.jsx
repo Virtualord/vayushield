@@ -3,7 +3,7 @@ import RiskBadge from './RiskBadge.jsx';
 export default function RankedZoneList({ assessments, baselineAssessments = assessments, comparisons = [], selectedZoneId, onSelect }) {
   const baselineById = new Map(baselineAssessments.map(({ zone, score }) => [zone.id, score]));
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
+    <section className="component-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
           <h3 className="text-base font-semibold text-white">Ranked zones</h3>

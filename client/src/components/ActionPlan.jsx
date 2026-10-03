@@ -47,7 +47,7 @@ export default function ActionPlan({ rankedZones, scenario }) {
 
   const groups = plan ? [...new Set(plan.priorityActions.map(({ group }) => group))] : [];
   return (
-    <section className="rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
+    <section className="component-panel rounded-2xl border border-cyan-400/20 bg-slate-900/80 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Community response</p>

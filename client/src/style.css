@@ -176,6 +176,26 @@ body { margin: 0; background: var(--page); color: var(--label); }
 .map-legend > p { margin: 0 12px 8px; color: var(--secondary-label); font-size: 10px; }
 .map-control-buttons button, .leaflet-control-zoom a { border-radius: 12px !important; border: 1px solid var(--glass-border) !important; color: var(--label) !important; background: var(--glass-strong) !important; }
 .map-region .leaflet-tooltip { color: white; }
+.component-panel { border-radius: 20px !important; border-color: var(--glass-border) !important; background: var(--glass-child) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); color: var(--label); }
+.component-panel [class~="bg-slate-950/50"], .component-panel [class~="bg-slate-950/60"], .component-panel [class~="bg-slate-950/70"], .component-panel [class~="bg-slate-900/80"], .component-panel [class~="bg-slate-900/70"] { background: var(--glass-child) !important; }
+.component-panel [class~="border-slate-800"], .component-panel [class~="border-slate-700"] { border-color: var(--glass-border) !important; }
+.component-panel [class~="text-white"], .component-panel [class~="text-slate-100"], .component-panel [class~="text-slate-200"], .component-panel [class~="text-slate-300"] { color: var(--label) !important; }
+.component-panel [class~="text-slate-400"], .component-panel [class~="text-slate-500"] { color: var(--secondary-label) !important; }
+.component-panel select, .component-panel textarea { color: var(--label) !important; background: var(--glass-strong) !important; border-color: var(--glass-border) !important; }
+.ai-panel { border-color: color-mix(in srgb, var(--accent) 36%, var(--glass-border)) !important; background: color-mix(in srgb, var(--accent) 9%, var(--glass-child)) !important; }
+.ai-source-label { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 4px; color: var(--label); font-size: 11px; font-weight: 650; }
+.ai-source-label svg { color: var(--accent); }
+.score-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-color: var(--glass-border) !important; background: var(--glass-child) !important; }
+.score-number { font-size: 38px; line-height: 1; font-variant-numeric: tabular-nums; }
+.input-metrics > div { border-color: var(--glass-border) !important; background: var(--glass-child) !important; }
+.component-progress-fill { background: var(--component-color); }
+.component-panel .bg-cyan-400 { color: white !important; background: var(--accent) !important; }
+.component-panel .text-cyan-300, .component-panel .text-cyan-200 { color: var(--label) !important; }
+.component-panel .border-cyan-400\/20 { border-color: var(--glass-border) !important; }
+.component-panel details, .component-panel [class~="bg-slate-800"] { background: var(--glass-child) !important; }
+.component-panel .text-rose-300, .component-panel .text-orange-200, .component-panel .text-amber-200, .component-panel .text-emerald-200 { color: var(--label) !important; }
+.component-panel .text-rose-300::before, .component-panel .text-orange-200::before, .component-panel .text-amber-200::before, .component-panel .text-emerald-200::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: currentColor; }
+.component-panel .rounded-lg, .component-panel .rounded-xl { border-radius: 12px; }
 
 @media (max-width: 1023px) {
   .dashboard-sidebar { width: 330px; }
