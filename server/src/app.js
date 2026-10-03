@@ -1,11 +1,13 @@
 import cors from 'cors';
 import express from 'express';
-import { generateExplanation } from './services/gemini.js';
+import { generateActionPlan, generateExplanation } from './services/gemini.js';
 import { analyzeRequest } from './services/analyzeRequest.js';
+import { planRequest } from './services/planRequest.js';
 import { createRateLimiter } from './services/rateLimit.js';
 
 export function createApp({
   analyzeWithGemini = generateExplanation,
+  planWithGemini = generateActionPlan,
   apiKeyProvider = () => process.env.GEMINI_API_KEY,
 } = {}) {
   const app = express();
@@ -17,6 +19,14 @@ export function createApp({
     const outcome = await analyzeRequest(request.body, {
       apiKey: apiKeyProvider(),
       analyzeWithGemini,
+    });
+    return response.status(outcome.status).json(outcome.payload);
+  });
+
+  app.post('/api/plan', createRateLimiter(), async (request, response) => {
+    const outcome = await planRequest(request.body, {
+      apiKey: apiKeyProvider(),
+      planWithGemini,
     });
     return response.status(outcome.status).json(outcome.payload);
   });

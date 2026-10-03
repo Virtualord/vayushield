@@ -9,6 +9,7 @@ const zoneFields = [
 const scenarioFields = ['windSpeed', 'traffic', 'industry'];
 const levels = new Set(['CRITICAL', 'HIGH', 'MODERATE', 'LOW']);
 const scenarioLevels = new Set(['low', 'normal', 'high']);
+const communityGroups = new Set(['Schools', 'Healthcare', 'Elderly', 'Outdoor workers', 'Industrial workers']);
 
 function hasExactFields(value, fields) {
   return (
@@ -66,5 +67,31 @@ export function isValidAnalyzeBody(body) {
     scenarioLevels.has(body.scenario.industry) &&
     ['en', 'hi'].includes(body.language) &&
     ['authority', 'resident'].includes(body.audience)
+  );
+}
+
+export function isValidPlanBody(body) {
+  if (!hasExactFields(body, ['rankedZones', 'scenario', 'language', 'audience'])) return false;
+  if (!Array.isArray(body.rankedZones) || body.rankedZones.length !== 3 || !body.rankedZones.every(isValidAssessment)) return false;
+  if (body.rankedZones[0].score < body.rankedZones[1].score || body.rankedZones[1].score < body.rankedZones[2].score) return false;
+  if (!hasExactFields(body.scenario, scenarioFields)) return false;
+  return (
+    (body.scenario.windSpeed === null || isFiniteNumber(body.scenario.windSpeed, 0)) &&
+    scenarioLevels.has(body.scenario.traffic) && scenarioLevels.has(body.scenario.industry) &&
+    ['en', 'hi'].includes(body.language) && ['authority', 'resident'].includes(body.audience)
+  );
+}
+
+export function isValidPlanResult(result, rankedZones) {
+  if (!hasExactFields(result, ['priorityActions', 'monitoringPlan', 'advisoryMessage', 'caveat'])) return false;
+  const zoneIds = new Set(rankedZones.map(({ zone }) => zone.id));
+  return (
+    Array.isArray(result.priorityActions) && result.priorityActions.length > 0 &&
+    result.priorityActions.every((item) => hasExactFields(item, ['group', 'zoneId', 'action']) &&
+      communityGroups.has(item.group) && zoneIds.has(item.zoneId) && typeof item.action === 'string' && item.action.trim().length > 0) &&
+    Array.isArray(result.monitoringPlan) && result.monitoringPlan.length > 0 &&
+    result.monitoringPlan.every((item) => typeof item === 'string' && item.trim().length > 0) &&
+    typeof result.advisoryMessage === 'string' && result.advisoryMessage.trim().length > 0 &&
+    typeof result.caveat === 'string' && result.caveat.trim().length > 0
   );
 }
