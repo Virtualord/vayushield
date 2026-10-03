@@ -17,6 +17,15 @@ export const COMMUNITY_SENSITIVITY = Object.freeze({
   'Industrial workers': 1.15,
 });
 
+export const ACTIVITY_SETTING_FACTORS = Object.freeze({ indoor: 0.75, outdoor: 1.25, commute: 1.1 });
+export const ACTIVITY_EXERTION_FACTORS = Object.freeze({ low: 0.8, medium: 1, high: 1.25 });
+export const ACTIVITY_DURATION_FACTOR = Object.freeze({ referenceMin: 30, minimum: 0.5, maximum: 2 });
+export const ACTIVITY_PROFILE_FACTORS = Object.freeze({
+  purifier: 0.65,
+  windowsOpen: 1.2,
+  sensitiveGroup: 1.15,
+});
+
 export const WEIGHTS = Object.freeze({
   hazard: 0.6,
   exposure: 0.15,
@@ -74,6 +83,24 @@ export function groupImpact(assessment) {
     const score = Math.min(100, Math.max(0, Math.round(assessment.score * multiplier)));
     return { group, multiplier, score, level: riskLevel(score) };
   });
+}
+
+export function exposureScore(zoneAssessment, activity, profile) {
+  const durationFactor = Math.min(
+    ACTIVITY_DURATION_FACTOR.maximum,
+    Math.max(ACTIVITY_DURATION_FACTOR.minimum, activity.durationMin / ACTIVITY_DURATION_FACTOR.referenceMin),
+  );
+  const indoorProfileFactor = activity.setting === 'indoor'
+    ? (profile.hasPurifier ? ACTIVITY_PROFILE_FACTORS.purifier : 1) *
+      (profile.windowsOpen ? ACTIVITY_PROFILE_FACTORS.windowsOpen : 1)
+    : 1;
+  const sensitivityFactor = profile.sensitiveGroup ? ACTIVITY_PROFILE_FACTORS.sensitiveGroup : 1;
+  const score = Math.min(100, Math.max(0, Math.round(
+    zoneAssessment.score * ACTIVITY_SETTING_FACTORS[activity.setting] *
+    ACTIVITY_EXERTION_FACTORS[activity.exertion] * durationFactor *
+    indoorProfileFactor * sensitivityFactor,
+  )));
+  return { score, level: riskLevel(score) };
 }
 
 export function assessZone(zone, scenario) {
